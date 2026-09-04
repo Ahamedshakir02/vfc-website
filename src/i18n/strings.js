@@ -6,6 +6,12 @@
  *
  * Anything the copy doc left in [brackets] is kept as a TODO_ prefixed value
  * so it renders as a visible placeholder on the page - search for `TODO`.
+ *
+ * NAME: the club is "VFC Arts, Sports & Welfare Club" per the spec and the
+ * design brief. The copy doc still carries the older "Arts and Sports"
+ * wording; the newer name wins. The Malayalam form below follows the copy
+ * doc's own transliteration pattern and needs the same native-speaker check
+ * as the rest of the Malayalam.
  */
 
 export const LANGUAGES = [
@@ -39,16 +45,16 @@ export const strings = {
   home: {
     heroHeadline: {
       // Brand name - deliberately identical in both languages.
-      en: 'VFC Arts and Sports Club',
-      ml: 'VFC Arts and Sports Club',
+      en: 'VFC Arts, Sports & Welfare Club',
+      ml: 'VFC Arts, Sports & Welfare Club',
     },
     heroTagline: {
       en: 'Where sport meets community.',
       ml: 'കായികവും സമൂഹവും ഒന്നിക്കുന്നിടം.',
     },
     heroSubline: {
-      en: 'VFC Arts and Sports Club trains athletes, supports local talent, and gives back to the community it calls home.',
-      ml: 'വി.എഫ്.സി ആർട്സ് ആൻഡ് സ്പോർട്സ് ക്ലബ് കായികതാരങ്ങളെ പരിശീലിപ്പിക്കുകയും, പ്രാദേശിക പ്രതിഭകളെ പിന്തുണയ്ക്കുകയും, സ്വന്തം സമൂഹത്തിന് തിരികെ നൽകുകയും ചെയ്യുന്നു.',
+      en: 'VFC Arts, Sports & Welfare Club trains athletes, supports local talent, and gives back to the community it calls home.',
+      ml: 'വി.എഫ്.സി ആർട്സ്, സ്പോർട്സ് & വെൽഫെയർ ക്ലബ് കായികതാരങ്ങളെ പരിശീലിപ്പിക്കുകയും, പ്രാദേശിക പ്രതിഭകളെ പിന്തുണയ്ക്കുകയും, സ്വന്തം സമൂഹത്തിന് തിരികെ നൽകുകയും ചെയ്യുന്നു.',
     },
     // Template - {event} and {date} are filled per event once Firestore is wired.
     registrationBanner: {
@@ -77,13 +83,13 @@ export const strings = {
     // The [brackets] below are split out into TODO chunks in aboutBodyParts.
     bodyParts: {
       leadA: {
-        en: 'VFC Arts and Sports Club was founded to give the people of ',
+        en: 'VFC Arts, Sports & Welfare Club was founded to give the people of ',
         ml: '',
       },
       area: { en: 'TODO: [area]', ml: 'TODO: [പ്രദേശം]' },
       leadB: {
         en: ' a place to play, train, and grow — on the field and in the community. ',
-        ml: ' ജനങ്ങൾക്ക് കളിക്കാനും പരിശീലിക്കാനും വളരാനുമുള്ള ഇടം നൽകുന്നതിനായി വി.എഫ്.സി ആർട്സ് ആൻഡ് സ്പോർട്സ് ക്ലബ് സ്ഥാപിതമായി — കളിക്കളത്തിലും സമൂഹത്തിലും. ',
+        ml: ' ജനങ്ങൾക്ക് കളിക്കാനും പരിശീലിക്കാനും വളരാനുമുള്ള ഇടം നൽകുന്നതിനായി വി.എഫ്.സി ആർട്സ്, സ്പോർട്സ് & വെൽഫെയർ ക്ലബ് സ്ഥാപിതമായി — കളിക്കളത്തിലും സമൂഹത്തിലും. ',
       },
       story: {
         en: 'TODO: [Add the real founding story / year / origin here.]',
@@ -109,8 +115,8 @@ export const strings = {
   footer: {
     // {year} filled at render time.
     rights: {
-      en: '© {year} VFC Arts and Sports Club. All rights reserved.',
-      ml: '© {year} വി.എഫ്.സി ആർട്സ് ആൻഡ് സ്പോർട്സ് ക്ലബ്. എല്ലാ അവകാശങ്ങളും നിക്ഷിപ്തം.',
+      en: '© {year} VFC Arts, Sports & Welfare Club. All rights reserved.',
+      ml: '© {year} വി.എഫ്.സി ആർട്സ്, സ്പോർട്സ് & വെൽഫെയർ ക്ലബ്. എല്ലാ അവകാശങ്ങളും നിക്ഷിപ്തം.',
     },
   },
 }

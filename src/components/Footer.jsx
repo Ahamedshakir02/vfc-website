@@ -14,7 +14,7 @@ export default function Footer() {
         <div>
           <img
             src="/logo/vfc-logo-white.png"
-            alt="VFC Arts and Sports Club"
+            alt="VFC Arts, Sports & Welfare Club"
             className="h-14 w-auto"
             width="56"
             height="56"
@@ -23,7 +23,7 @@ export default function Footer() {
         </div>
 
         <nav className="text-sm">
-          <h3 className="mb-3 font-semibold text-gold">{t(strings.nav.home)}</h3>
+          <h3 className="mb-3 font-display font-semibold text-gold">{t(strings.nav.home)}</h3>
           <ul className="space-y-2 text-white/75">
             <li><Link to="/about" className="hover:text-white">{t(strings.nav.about)}</Link></li>
             <li><Link to="/awards" className="hover:text-white">{t(strings.nav.awards)}</Link></li>
@@ -33,7 +33,7 @@ export default function Footer() {
         </nav>
 
         <div className="text-sm">
-          <h3 className="mb-3 font-semibold text-gold">{t(strings.contact.heading)}</h3>
+          <h3 className="mb-3 font-display font-semibold text-gold">{t(strings.contact.heading)}</h3>
           <dl className="space-y-2 text-white/75">
             <div>
               <dt className="sr-only">{t(strings.contact.phone)}</dt>
