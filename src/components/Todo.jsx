@@ -12,7 +12,7 @@ export default function Todo({ children, block = false }) {
       data-todo="true"
       title="Placeholder — real content needed from the client"
       className={[
-        'rounded border border-dashed border-gold bg-gold/10 font-medium text-brand-deep',
+        'border border-dashed border-gold bg-gold/10 font-medium text-brand-deep',
         block ? 'block px-4 py-3 text-sm' : 'inline-block px-1.5 py-0.5 text-[0.9em]',
       ].join(' ')}
     >

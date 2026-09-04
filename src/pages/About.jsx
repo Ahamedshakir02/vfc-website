@@ -41,7 +41,7 @@ export default function About() {
           <div>
             <p className="text-lg leading-relaxed text-ink/85">{body}</p>
 
-            <div className="mt-10 rounded-xl border border-brand/10 bg-sand p-6">
+            <div className="mt-10 border-l-2 border-gold bg-sand p-6">
               <h3 className="font-bold text-brand">{t(strings.home.impactHeading)}</h3>
               <p className="mt-3 leading-relaxed text-ink/75">{t(strings.home.impactBlurb)}</p>
             </div>
@@ -55,7 +55,7 @@ export default function About() {
 
           <div className="grid gap-4">
             <PhotoPlaceholder label="TODO: [club / team photo]" ratio="aspect-[4/5]" />
-            <PhotoPlaceholder label="TODO: [community or charity activity photo]" />
+            <PhotoPlaceholder label="TODO: [community or charity activity photo]" ratio="aspect-[4/3]" />
           </div>
         </div>
       </Section>

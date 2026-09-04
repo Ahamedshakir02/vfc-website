@@ -19,7 +19,7 @@ export default function Header() {
 
   const linkClass = ({ isActive }) =>
     [
-      'rounded-full px-3 py-2 text-sm font-medium transition-colors',
+      'px-3 py-2 text-sm font-medium transition-colors',
       isActive ? 'bg-brand text-white' : 'text-ink/75 hover:bg-brand/10 hover:text-brand',
     ].join(' ')
 
@@ -29,15 +29,15 @@ export default function Header() {
         <Link to="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
           <img
             src="/logo/vfc-logo-purple.png"
-            alt="VFC Arts and Sports Club"
+            alt="VFC Arts, Sports & Welfare Club"
             className="h-11 w-auto"
             width="44"
             height="44"
           />
-          <span className="hidden text-sm font-bold leading-tight text-brand sm:block">
-            VFC Arts and
+          <span className="hidden font-display text-sm font-bold leading-tight text-brand sm:block">
+            VFC Arts, Sports
             <br />
-            Sports Club
+            & Welfare Club
           </span>
         </Link>
 
@@ -55,7 +55,7 @@ export default function Header() {
 
         <button
           type="button"
-          className="rounded-lg border border-brand/25 px-3 py-2 text-brand md:hidden"
+          className="border border-brand/25 px-3 py-2 text-brand md:hidden"
           aria-expanded={open}
           aria-label="Menu"
           onClick={() => setOpen((v) => !v)}
@@ -73,7 +73,7 @@ export default function Header() {
               end={l.end}
               onClick={() => setOpen(false)}
               className={({ isActive }) =>
-                `block rounded-lg px-3 py-2 text-base font-medium ${
+                `block px-3 py-2 text-base font-medium ${
                   isActive ? 'bg-brand text-white' : 'text-ink/80'
                 }`
               }

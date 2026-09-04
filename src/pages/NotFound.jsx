@@ -10,7 +10,7 @@ export default function NotFound() {
       <p className="text-ink/70">This page doesn't exist yet.</p>
       <Link
         to="/"
-        className="mt-6 inline-block rounded-full bg-brand px-6 py-3 font-semibold text-white"
+        className="mt-6 inline-block bg-brand px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-deep"
       >
         {t(strings.nav.home)}
       </Link>

@@ -16,7 +16,7 @@ export default function Section({ id, heading, action, tone = 'light', className
                 {heading}
                 <span
                   aria-hidden="true"
-                  className="mt-3 block h-1 w-14 rounded-full bg-gold"
+                  className="mt-3 block h-1 w-14 bg-gold"
                 />
               </h2>
             )}

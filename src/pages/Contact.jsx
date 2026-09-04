@@ -24,7 +24,7 @@ export default function Contact() {
           <dl className="space-y-6">
             {rows.map((row) => (
               <div key={row.label} className="border-b border-brand/10 pb-5">
-                <dt className="text-xs font-semibold uppercase tracking-wide text-ink/50">
+                <dt className="text-sm font-semibold text-ink/55">
                   {row.label}
                 </dt>
                 <dd className="mt-2 text-lg">
@@ -34,8 +34,8 @@ export default function Contact() {
             ))}
           </dl>
 
-          <div className="rounded-xl border border-brand/10 bg-sand p-6">
-            <h3 className="font-bold text-brand">{t(strings.contact.address)}</h3>
+          <div className="border border-brand/15 bg-sand p-6">
+            <h3 className="font-display font-bold text-brand">{t(strings.contact.address)}</h3>
             {/* TODO: embed a map once the address and a Maps link are confirmed. */}
             <Todo block>[Map embed — needs the confirmed address / Google Maps link.]</Todo>
             <Todo block>
