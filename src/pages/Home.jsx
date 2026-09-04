@@ -1,24 +1,28 @@
 import { Link } from 'react-router-dom'
 import Section from '../components/Section.jsx'
 import Todo from '../components/Todo.jsx'
+import Button from '../components/Button.jsx'
+import Crest from '../components/Crest.jsx'
 import PhotoPlaceholder from '../components/PhotoPlaceholder.jsx'
 import { useLang } from '../i18n/LanguageContext.jsx'
 import { strings } from '../i18n/strings.js'
 import { AWARD_PLACEHOLDERS, GALLERY_PLACEHOLDERS, IMPACT_STATS } from '../data/placeholders.js'
 
 /**
- * The spec's banner renders only when an event's status is `open`.
- * Stage 1 has no Firestore, so `openEvent` is always null and the banner
- * stays hidden. Stage 2 swaps this for a live events query.
+ * Full-width gold strip, scoreboard-style — flashes urgent status across the
+ * page. Not a pill, not a card.
+ *
+ * The spec's banner renders only when an event's status is `open`. Stage 1 has
+ * no Firestore, so `openEvent` is always null and the strip stays hidden.
  */
-function RegistrationBanner({ openEvent }) {
+function RegistrationStrip({ openEvent }) {
   const { t } = useLang()
   if (!openEvent) return null
 
   return (
     <div className="bg-gold text-brand-deep">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-3 sm:px-8">
-        <p className="text-sm font-semibold">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-5 py-3 sm:px-8">
+        <p className="font-semibold">
           {t(strings.home.registrationBanner, {
             event: openEvent.title,
             date: openEvent.closesOn,
@@ -26,7 +30,7 @@ function RegistrationBanner({ openEvent }) {
         </p>
         <Link
           to="/events"
-          className="rounded-full bg-brand-deep px-4 py-1.5 text-sm font-semibold text-white"
+          className="ml-auto bg-brand-deep px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand"
         >
           {t(strings.actions.registerNow)}
         </Link>
@@ -43,47 +47,35 @@ export default function Home() {
 
   return (
     <>
-      <RegistrationBanner openEvent={openEvent} />
+      <RegistrationStrip openEvent={openEvent} />
 
-      {/* Hero — sports energy: bold purple, crest front and centre. */}
-      <section className="relative overflow-hidden bg-brand text-white">
-        <div
-          aria-hidden="true"
-          className="absolute -right-24 -top-24 h-96 w-96 rounded-full bg-brand-deep/60 blur-3xl"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-gold/20 blur-3xl"
-        />
-
-        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-5 py-20 sm:px-8 sm:py-28 md:grid-cols-[1.2fr_1fr]">
-          <div>
-            <p className="mb-4 inline-block rounded-full border border-gold/50 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-gold">
-              Est. 2009 · Vellalur
-            </p>
-            <h1 className="text-4xl font-black leading-tight tracking-tight sm:text-6xl">
+      {/*
+        The hero is where all the boldness is spent: flat brand purple cut off
+        on a diagonal, like a goal line. Everything below it stays quiet.
+      */}
+      <section
+        className="relative bg-brand text-white"
+        style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 4.5rem), 0 100%)' }}
+      >
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-36 pt-20 sm:px-8 sm:pt-28 md:grid-cols-[1.25fr_1fr]">
+          <div className="hero-settle">
+            <h1 className="text-4xl font-extrabold sm:text-6xl">
               {t(strings.home.heroHeadline)}
             </h1>
-            <p className="mt-5 text-2xl font-semibold text-gold sm:text-3xl">
+            <p className="mt-4 font-display text-2xl font-semibold text-gold sm:text-3xl">
               {t(strings.home.heroTagline)}
             </p>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
+            <p className="mt-5 max-w-xl leading-relaxed text-white/80 sm:text-lg">
               {t(strings.home.heroSubline)}
             </p>
 
             <div className="mt-9 flex flex-wrap gap-3">
-              <Link
-                to="/about"
-                className="rounded-full bg-gold px-6 py-3 font-semibold text-brand-deep transition-colors hover:bg-white"
-              >
+              <Button to="/about" variant="gold">
                 {t(strings.actions.readMore)}
-              </Link>
-              <Link
-                to="/contact"
-                className="rounded-full border border-white/40 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10"
-              >
+              </Button>
+              <Button to="/contact" variant="outlineLight">
                 {t(strings.nav.contact)}
-              </Link>
+              </Button>
             </div>
           </div>
 
@@ -92,27 +84,24 @@ export default function Home() {
               src="/logo/vfc-logo-white.png"
               alt=""
               aria-hidden="true"
-              className="w-56 drop-shadow-2xl sm:w-72"
+              className="w-52 sm:w-72"
             />
           </div>
         </div>
       </section>
 
-      {/* Impact — community warmth. Numbers are blanks until the client sends real counts. */}
-      <Section id="impact" tone="white" heading={t(strings.home.impactHeading)}>
-        <div className="grid gap-10 md:grid-cols-[1.1fr_1fr] md:items-center">
+      {/* Impact — numbers stay blank until the client sends real counts. */}
+      <Section id="impact" heading={t(strings.home.impactHeading)}>
+        <div className="grid gap-10 md:grid-cols-[1.1fr_1fr] md:items-start">
           <p className="text-lg leading-relaxed text-ink/80">{t(strings.home.impactBlurb)}</p>
-          <dl className="grid grid-cols-3 gap-4">
+          <dl className="grid grid-cols-3 gap-px bg-brand/15">
             {IMPACT_STATS.map((stat) => (
-              <div
-                key={stat.key}
-                className="rounded-xl border border-brand/10 bg-sand p-4 text-center"
-              >
+              <div key={stat.key} className="bg-sand px-4 py-5">
                 <dt className="sr-only">{t(strings.home.impactLabels[stat.key])}</dt>
-                <dd className="text-2xl font-bold text-brand">
+                <dd className="font-display text-2xl font-bold text-brand">
                   <Todo>{stat.value}</Todo>
                 </dd>
-                <p className="mt-2 text-xs font-medium uppercase tracking-wide text-ink/60">
+                <p className="mt-2 text-sm text-ink/60">
                   {t(strings.home.impactLabels[stat.key])}
                 </p>
               </div>
@@ -121,26 +110,30 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* Awards teaser */}
+      {/* Awards shelf — unequal tiles on a shared baseline, like trophies. */}
       <Section
         id="awards-teaser"
+        tone="white"
         heading={t(strings.home.awardsHeading)}
         action={
-          <Link to="/awards" className="font-semibold text-brand hover:text-brand-deep">
-            {t(strings.actions.viewAll)} →
+          <Link to="/awards" className="font-semibold text-brand underline-offset-4 hover:underline">
+            {t(strings.actions.viewAll)}
           </Link>
         }
       >
-        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {AWARD_PLACEHOLDERS.slice(0, 3).map((award) => (
+        <ul className="flex flex-wrap items-end gap-px bg-brand/15">
+          {AWARD_PLACEHOLDERS.slice(0, 3).map((award, i) => (
             <li
               key={award.id}
-              className="rounded-xl border border-brand/10 bg-white p-6 shadow-sm"
+              className="flex-1 bg-white px-6 pb-6"
+              // Unequal heights sitting on one baseline — the shelf, not a card grid.
+              style={{ paddingTop: `${2.5 + i * 1.25}rem`, minWidth: '13rem' }}
             >
-              <p className="text-sm font-semibold text-gold">
+              <Crest className="h-7 w-7 text-gold" />
+              <p className="mt-4 font-semibold text-ink/60">
                 <Todo>{award.year}</Todo>
               </p>
-              <h3 className="mt-3 font-bold text-brand">
+              <h3 className="mt-2 font-bold text-brand">
                 <Todo>{award.title}</Todo>
               </h3>
             </li>
@@ -148,20 +141,26 @@ export default function Home() {
         </ul>
       </Section>
 
-      {/* Gallery preview */}
+      {/* Gallery — asymmetric mosaic, mixed tile sizes. */}
       <Section
         id="gallery-preview"
-        tone="white"
         heading={t(strings.home.galleryHeading)}
         action={
-          <Link to="/gallery" className="font-semibold text-brand hover:text-brand-deep">
-            {t(strings.actions.viewAll)} →
+          <Link to="/gallery" className="font-semibold text-brand underline-offset-4 hover:underline">
+            {t(strings.actions.viewAll)}
           </Link>
         }
       >
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {GALLERY_PLACEHOLDERS.slice(0, 6).map((photo) => (
-            <PhotoPlaceholder key={photo.id} label={photo.caption} />
+        <div className="grid auto-rows-[8rem] grid-cols-2 gap-3 sm:grid-cols-4">
+          {GALLERY_PLACEHOLDERS.slice(0, 5).map((photo, i) => (
+            <PhotoPlaceholder
+              key={photo.id}
+              label={photo.caption}
+              className={
+                // Mixed spans so the mosaic reads as real photos, not a uniform grid.
+                ['col-span-2 row-span-2', '', '', 'col-span-2', ''][i]
+              }
+            />
           ))}
         </div>
       </Section>
