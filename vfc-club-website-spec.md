@@ -1,7 +1,7 @@
-# VFC Arts and Sports Club — website v1 spec
+# VFC Arts, Sports & Welfare Club — website v1 spec
 
 ## Project
-- Paid client project. Client: VFC Arts and Sports Club, a registered society/trust (Palakkad district — exact registration number/certificate TBD, not blocking this build).
+- Paid client project. Client: VFC Arts, Sports & Welfare Club, Vellalur, Palakkad — founded 2009, a registered society/trust (exact registration number/certificate TBD, not blocking this build).
 - Deadline: 3-day build window (from this planning conversation, roughly Sept 7, 2026).
 - Stack: React + Vite + Tailwind CSS + Firebase (Firestore + Auth + Hosting).
 
