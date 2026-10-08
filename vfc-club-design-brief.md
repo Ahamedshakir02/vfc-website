@@ -27,11 +27,25 @@ Purple carries the page. Gold is the one loud accent — don't let it and deep p
 - Left-aligned content throughout — reads like a roster/program, not a centered marketing landing page.
 
 ## Principles
-- Spend boldness in one place: the diagonal hero. Everything else is quiet and disciplined.
+- Spend boldness in one place: the diagonal hero and the ball that lives on it. Everything else is quiet and disciplined.
 - No rounded-card-with-shadow treatment anywhere on the site.
 - No eyebrow labels, no arrow-suffixed buttons ("Register →"), no middle-dot meta strings, no all-caps labels.
-- Motion: one deliberate moment on load at most. No fade-slide-up on every section — that's the generic default and it's expensive on a mid-range Android phone anyway.
+- Motion (revised Oct 2026 — replaces the earlier "one moment on load at most" rule, at the studio's direction): the site moves, but as one idea rather than a pile of effects. See "Motion" below.
 - Structural devices should mean something: the shelf holds trophies, the mosaic holds unposed photos, the strip flashes urgent status. Nothing decorative for its own sake.
+
+## Motion
+One concept, "matchday": the football is the only object that travels.
+- **Load** — a purple curtain with the crest lifts on the hero's diagonal; the mark rises letter by letter, the centre circle draws in around the crest, and the ball drops onto the goal line.
+- **Hero scroll** — the ball rolls down the diagonal and off the pitch, turning exactly as far as it travels. Click it and it gets kicked.
+- **Page progress** — a gold touchline along the bottom of the screen, with a small ball rolling along it.
+- **Sections** — headings rise word by word and the gold rule draws out; the shelf line draws before the trophies rise onto it; mosaic photos are unveiled bottom-up; the impact blurb fills in as it is read.
+- **Navigation** — the same diagonal curtain sweeps across between pages.
+
+Rules that keep it disciplined:
+- One easing family for entrances (`expo.out`); scroll-linked motion is scrubbed, never timed.
+- Transforms, opacity and clip-path only. No 3D, no video, no Lottie — the spec still rules those out.
+- Smooth scrolling applies to mouse wheels only; touch keeps native momentum for mid-range Android phones.
+- `prefers-reduced-motion` gets the complete static page: nothing is ever hidden behind an animation that will not play.
 
 ## Resolved
 Logo's in hand, palette's confirmed (see Color above) — this replaces the earlier placeholder green guess. Everything else in this brief (type pairing, diagonal hero, shelf, mosaic, no rounded-card kit) holds unchanged.

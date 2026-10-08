@@ -20,6 +20,18 @@ npm run dev
 npm run build      # outputs to dist/
 ```
 
+## Motion
+
+GSAP + ScrollTrigger for choreography, Lenis for wheel smoothing. Everything is
+set up in `src/lib/motion.js` (`useGsap` scopes and cleans up animations and
+skips them entirely under `prefers-reduced-motion`) and `src/lib/SmoothScroll.jsx`.
+The intent behind each moment is in the "Motion" section of
+`vfc-club-design-brief.md`.
+
+Logo files in `public/logo/` are cropped derivatives of `logo/VFC Logo-01.png`:
+the purple crest, and a white version of the same crest for purple surfaces.
+(`logo/VFC Logo-03.png` is a wide wordmark, not a crest, and is not used.)
+
 ## Firebase
 
 `.env.example` → copy to `.env.local` and fill from the Firebase console.
