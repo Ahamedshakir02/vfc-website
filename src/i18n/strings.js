@@ -29,6 +29,14 @@ export const strings = {
     contact: { en: 'Contact', ml: 'ബന്ധപ്പെടുക' },
   },
 
+  // The three words of the club's name, for the running band on the home page.
+  // Malayalam forms are lifted from the club name already used in this file.
+  name: {
+    arts: { en: 'Arts', ml: 'ആർട്സ്' },
+    sports: { en: 'Sports', ml: 'സ്പോർട്സ്' },
+    welfare: { en: 'Welfare', ml: 'വെൽഫെയർ' },
+  },
+
   actions: {
     registerNow: { en: 'Register now', ml: 'ഇപ്പോൾ രജിസ്റ്റർ ചെയ്യുക' },
     submitRegistration: { en: 'Submit registration', ml: 'രജിസ്ട്രേഷൻ സമർപ്പിക്കുക' },

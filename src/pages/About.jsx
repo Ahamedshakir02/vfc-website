@@ -1,12 +1,30 @@
 import Section from '../components/Section.jsx'
 import Todo from '../components/Todo.jsx'
+import PageHero from '../components/PageHero.jsx'
 import PhotoPlaceholder from '../components/PhotoPlaceholder.jsx'
+import Reveal from '../components/motion/Reveal.jsx'
 import { useLang } from '../i18n/LanguageContext.jsx'
 import { strings } from '../i18n/strings.js'
+import { gsap, useGsap } from '../lib/motion.js'
 
 export default function About() {
   const { t, lang } = useLang()
   const parts = strings.about.bodyParts
+
+  // The two photos drift at different speeds, so the column has some depth.
+  const photos = useGsap(() => {
+    gsap.utils.toArray('.drift').forEach((el, i) => {
+      gsap.fromTo(
+        el,
+        { y: i ? 70 : 20 },
+        {
+          y: i ? -70 : -20,
+          ease: 'none',
+          scrollTrigger: { trigger: photos.current, start: 'top bottom', end: 'bottom top', scrub: true },
+        },
+      )
+    })
+  })
 
   // The EN and ML sentences put the [area] blank in different positions, so
   // each language gets its own assembly order rather than one shared template.
@@ -30,32 +48,34 @@ export default function About() {
 
   return (
     <>
-      <Section tone="brand" heading={t(strings.about.heading)}>
-        <p className="max-w-3xl text-lg leading-relaxed text-white/85">
-          {t(strings.home.heroSubline)}
-        </p>
-      </Section>
+      <PageHero heading={t(strings.about.heading)} lede={t(strings.home.heroSubline)} />
 
       <Section tone="white">
-        <div className="grid gap-12 md:grid-cols-[1.15fr_1fr] md:items-start">
-          <div>
-            <p className="text-lg leading-relaxed text-ink/85">{body}</p>
+        <div className="grid gap-14 md:grid-cols-[1.15fr_1fr] md:items-start md:gap-16">
+          <Reveal stagger={0.12}>
+            <p className="text-lg leading-relaxed text-ink/85 sm:text-xl sm:leading-relaxed">{body}</p>
 
-            <div className="mt-10 border-l-2 border-gold bg-sand p-6">
-              <h3 className="font-bold text-brand">{t(strings.home.impactHeading)}</h3>
+            <div className="mt-12 border-l-2 border-gold bg-sand p-6 sm:p-8">
+              <h3 className="text-xl font-bold text-brand">{t(strings.home.impactHeading)}</h3>
               <p className="mt-3 leading-relaxed text-ink/75">{t(strings.home.impactBlurb)}</p>
             </div>
 
-            <Todo block>
-              [Club registration details — registered society/trust number and
-              certificate, Palakkad district. Marked TBD in the spec; add here
-              once the client provides it.]
-            </Todo>
-          </div>
+            <div className="mt-8">
+              <Todo block>
+                [Club registration details — registered society/trust number and
+                certificate, Palakkad district. Marked TBD in the spec; add here
+                once the client provides it.]
+              </Todo>
+            </div>
+          </Reveal>
 
-          <div className="grid gap-4">
-            <PhotoPlaceholder label="TODO: [club / team photo]" ratio="aspect-[4/5]" />
-            <PhotoPlaceholder label="TODO: [community or charity activity photo]" ratio="aspect-[4/3]" />
+          <div ref={photos} className="grid grid-cols-[1fr_0.8fr] items-start gap-4 md:pt-6">
+            <div className="drift">
+              <PhotoPlaceholder label="TODO: [club / team photo]" ratio="aspect-[4/5]" />
+            </div>
+            <div className="drift mt-16">
+              <PhotoPlaceholder label="TODO: [community or charity activity photo]" ratio="aspect-[3/4]" />
+            </div>
           </div>
         </div>
       </Section>
