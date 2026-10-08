@@ -14,65 +14,163 @@
   --font-display: "Baloo Chettan 2", "Noto Sans Malayalam", ui-sans-serif, system-ui, sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
+:root {
+  /* Depth of the diagonal cut shared by the hero, page heads and closing band. */
+  --cut: 2.75rem;
 }
 
-body {
-  background-color: var(--color-sand);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
+@media (min-width: 40rem) {
+  :root {
+    --cut: 4.5rem;
+  }
+}
+
+@layer base {
+  body {
+    background-color: var(--color-sand);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /*
+    Headlines run on the display face in both languages, so a bilingual page
+    reads as one voice rather than two mismatched fonts.
+  */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+  }
+
+  /* Baloo Chettan 2 sits tall; pull the line box in on large headlines. */
+  h1,
+  h2 {
+    line-height: 1.15;
+  }
+
+  ::selection {
+    background-color: var(--color-gold);
+    color: var(--color-brand-deep);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+  }
 }
 
 /*
-  Headlines run on the display face in both languages, so a bilingual page
-  reads as one voice rather than two mismatched fonts.
+  Malayalam needs a little more line height than Latin to stay readable. Set
+  once on the root so it inherits, rather than overriding every element.
 */
-h1,
-h2,
-h3 {
-  font-family: var(--font-display);
-}
-
-/* Baloo Chettan 2 sits tall; pull the line box in on large headlines. */
-h1,
-h2 {
-  line-height: 1.15;
-}
-
-/* Malayalam needs a little more line height than Latin to stay readable. */
-:lang(ml) {
+html:lang(ml) {
   line-height: 1.75;
 }
 
+/*
+  Display sizes. Malayalam words run long and stack vowel signs above and
+  below the line, so the same headline gets a smaller size and a looser line.
+*/
+.display-xl {
+  font-size: clamp(3rem, 11vw, 8.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+.display-lg {
+  font-size: clamp(2.1rem, 5.6vw, 4.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+:lang(ml) .display-xl {
+  font-size: clamp(1.6rem, 7vw, 5.75rem);
+  line-height: 1.4;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+:lang(ml) .display-lg {
+  font-size: clamp(1.7rem, 4.4vw, 3.25rem);
+  line-height: 1.45;
+  letter-spacing: 0;
+}
+
+/* The diagonal cut — a goal line rather than a straight rectangle edge. */
+.cut-bottom {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), 0 100%);
+}
+
+.cut-top {
+  clip-path: polygon(0 var(--cut), 100% 0, 100% 100%, 0 100%);
+}
+
+/* Word reveal: each word rises from behind its own clipping box. */
+.word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* Room for ascenders, descenders and Malayalam vowel signs inside the clip. */
+  padding: 0.14em 0.04em;
+  margin: -0.14em -0.04em;
+}
+
+.word {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* Underline that grows from the left, for text links. */
+.link-grow {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 2px;
+  padding-bottom: 3px;
+  transition: background-size 320ms cubic-bezier(0.22, 0.68, 0.36, 1);
+}
+
+.link-grow:hover,
+.link-grow:focus-visible {
+  background-size: 100% 2px;
+}
+
+/* Empty photo slots: a quiet hatch so they read as waiting, not broken. */
+.hatch {
+  background-color: color-mix(in srgb, var(--color-brand) 5%, transparent);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 13px,
+    color-mix(in srgb, var(--color-brand) 9%, transparent) 13px 14px
+  );
+}
+
+/* Pointer follower. */
+.cursor-dot {
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: -1.375rem 0 0 -1.375rem;
+  border-radius: 9999px;
+  border: 1.5px solid var(--color-gold);
+  background-color: var(--color-gold);
+  opacity: 0;
+  scale: 0.2;
+  transition:
+    scale 280ms cubic-bezier(0.22, 0.68, 0.36, 1),
+    background-color 280ms ease;
+}
+
+.cursor-dot.is-over {
+  scale: 1;
+  background-color: transparent;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-/*
-  The one deliberate motion moment on the site: the hero settles on load.
-  Everything below the fold is static by design — per-section fade-slide-up
-  is the generic default and costs too much on a mid-range Android phone.
-*/
-@keyframes hero-settle {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.hero-settle {
-  animation: hero-settle 620ms cubic-bezier(0.22, 0.68, 0.36, 1) both;
 }

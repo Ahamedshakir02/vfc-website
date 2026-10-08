@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/logo/vfc-logo-purple.png" />
+    <link rel="icon" type="image/png" href="/logo/vfc-crest-purple.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,7 +15,15 @@
       href="https://fonts.googleapis.com/css2?family=Baloo+Chettan+2:wght@600;700;800&family=Noto+Sans:wght@400;500;600&family=Noto+Sans+Malayalam:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+    <meta name="theme-color" content="#432d84" />
     <title>VFC Arts, Sports &amp; Welfare Club</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VFC Arts, Sports &amp; Welfare Club" />
+    <meta
+      property="og:description"
+      content="VFC Arts, Sports &amp; Welfare Club trains athletes, supports local talent, and gives back to the community it calls home."
+    />
+    <meta property="og:image" content="/logo/vfc-crest-purple.png" />
     <meta
       name="description"
       content="VFC Arts, Sports &amp; Welfare Club trains athletes, supports local talent, and gives back to the community it calls home."
@@ -23,6 +31,12 @@
   </head>
   <body>
     <div id="root"></div>
+    <!--
+      Purple from the very first paint, so the loader never flashes in over a
+      blank page. PageTransition removes this as soon as React has its own
+      curtain in place.
+    -->
+    <div id="boot" style="position: fixed; inset: 0; z-index: 90; background: #2e1f5c"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

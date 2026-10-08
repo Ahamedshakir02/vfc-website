@@ -9,10 +9,10 @@ import Todo from './Todo.jsx'
  */
 export default function PhotoPlaceholder({ label, ratio = '', className = '' }) {
   return (
-    <div
-      className={`${ratio} ${className} flex h-full min-h-0 items-end overflow-hidden border border-brand/15 bg-brand/5 p-3`}
-    >
-      <Todo>{label}</Todo>
+    <div className={`${ratio} ${className} photo h-full min-h-0 overflow-hidden`}>
+      <div className="photo-inner hatch flex h-full w-full items-end border border-brand/15 p-3">
+        <Todo>{label}</Todo>
+      </div>
     </div>
   )
 }

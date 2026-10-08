@@ -2,39 +2,57 @@ import { Link } from 'react-router-dom'
 import { useLang } from '../i18n/LanguageContext.jsx'
 import { strings } from '../i18n/strings.js'
 import { CONTACT } from '../data/placeholders.js'
+import { gsap, useGsap } from '../lib/motion.js'
 import Todo from './Todo.jsx'
+
+const links = [
+  { to: '/about', key: 'about' },
+  { to: '/awards', key: 'awards' },
+  { to: '/gallery', key: 'gallery' },
+  { to: '/contact', key: 'contact' },
+]
 
 export default function Footer() {
   const { t } = useLang()
   const year = new Date().getFullYear()
 
+  // The oversized club mark rises into place as the page runs out.
+  const ref = useGsap(() => {
+    gsap.from('.footer-mark', {
+      yPercent: 45,
+      ease: 'none',
+      scrollTrigger: { trigger: ref.current, start: 'top bottom', end: 'bottom bottom', scrub: true },
+    })
+  })
+
   return (
-    <footer className="bg-brand-deep text-white">
-      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-3">
+    <footer ref={ref} className="relative overflow-hidden bg-brand-deep text-white">
+      <div className="relative z-10 mx-auto grid max-w-6xl gap-10 px-5 pb-10 pt-16 sm:px-8 md:grid-cols-3">
         <div>
           <img
-            src="/logo/vfc-logo-white.png"
+            src="/logo/vfc-crest-white.png"
             alt="VFC Arts, Sports & Welfare Club"
-            className="h-14 w-auto"
-            width="56"
-            height="56"
+            className="h-16 w-auto"
           />
           <p className="mt-4 max-w-xs text-sm text-white/70">{t(strings.home.heroTagline)}</p>
         </div>
 
         <nav className="text-sm">
-          <h3 className="mb-3 font-display font-semibold text-gold">{t(strings.nav.home)}</h3>
+          <h3 className="mb-3 font-semibold text-gold">{t(strings.nav.home)}</h3>
           <ul className="space-y-2 text-white/75">
-            <li><Link to="/about" className="hover:text-white">{t(strings.nav.about)}</Link></li>
-            <li><Link to="/awards" className="hover:text-white">{t(strings.nav.awards)}</Link></li>
-            <li><Link to="/gallery" className="hover:text-white">{t(strings.nav.gallery)}</Link></li>
-            <li><Link to="/contact" className="hover:text-white">{t(strings.nav.contact)}</Link></li>
+            {links.map((l) => (
+              <li key={l.to}>
+                <Link to={l.to} className="link-grow transition-colors hover:text-white">
+                  {t(strings.nav[l.key])}
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
 
         <div className="text-sm">
-          <h3 className="mb-3 font-display font-semibold text-gold">{t(strings.contact.heading)}</h3>
-          <dl className="space-y-2 text-white/75">
+          <h3 className="mb-3 font-semibold text-gold">{t(strings.contact.heading)}</h3>
+          <dl className="space-y-2 text-white/75 [&_[data-todo]]:text-white/85">
             <div>
               <dt className="sr-only">{t(strings.contact.phone)}</dt>
               <dd><Todo>{CONTACT.phone}</Todo></dd>
@@ -47,8 +65,15 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-white/10 px-5 py-5 text-center text-xs text-white/60 sm:px-8">
-        {t(strings.footer.rights, { year })}
+      <p
+        aria-hidden="true"
+        className="footer-mark pointer-events-none -mb-[4vw] select-none px-4 font-display text-[36vw] font-extrabold leading-[0.74] tracking-[-0.03em] text-white/[0.06] sm:px-8"
+      >
+        VFC
+      </p>
+
+      <div className="relative z-10 border-t border-white/10 bg-brand-deep px-5 py-5 text-xs text-white/60 sm:px-8">
+        <div className="mx-auto max-w-6xl">{t(strings.footer.rights, { year })}</div>
       </div>
     </footer>
   )
