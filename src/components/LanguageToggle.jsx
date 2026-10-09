@@ -10,7 +10,7 @@ export default function LanguageToggle({ onDark = false }) {
   const active = onDark ? 'bg-white text-brand' : 'bg-brand text-white'
 
   return (
-    <div className={`inline-flex overflow-hidden border ${base}`} role="group" aria-label="Language">
+    <div className={`inline-flex overflow-hidden rounded-control border ${base}`} role="group" aria-label="Language">
       {LANGUAGES.map((l) => (
         <button
           key={l.code}

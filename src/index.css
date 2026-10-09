@@ -10,12 +10,19 @@
 
   /* Body: quiet and legible in both scripts. */
   --font-sans: "Noto Sans", "Noto Sans Malayalam", ui-sans-serif, system-ui, sans-serif;
+  /*
+    Corners are eased, not pill-shaped: a small radius for controls and chips,
+    a slightly larger one for tiles and photos. Still flat, with no shadows.
+  */
+  --radius-control: 0.5rem;
+  --radius-tile: 0.875rem;
+
   /* Display: one rounded, warm face carrying both Latin and Malayalam. */
   --font-display: "Baloo Chettan 2", "Noto Sans Malayalam", ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
-  /* Depth of the diagonal cut shared by the hero, page heads and closing band. */
+  /* Depth of the diagonal cut (see Cut.jsx) shared by the hero, page heads and closing band. */
   --cut: 2.75rem;
 }
 
@@ -97,15 +104,6 @@ html:lang(ml) {
   letter-spacing: 0;
 }
 
-/* The diagonal cut — a goal line rather than a straight rectangle edge. */
-.cut-bottom {
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), 0 100%);
-}
-
-.cut-top {
-  clip-path: polygon(0 var(--cut), 100% 0, 100% 100%, 0 100%);
-}
-
 /* Word reveal: each word rises from behind its own clipping box. */
 .word-mask {
   display: inline-block;
@@ -116,9 +114,9 @@ html:lang(ml) {
   margin: -0.14em -0.04em;
 }
 
+/* No will-change here: there are hundreds of words, and each would get its own layer. */
 .word {
   display: inline-block;
-  will-change: transform;
 }
 
 /* Underline that grows from the left, for text links. */
@@ -144,26 +142,6 @@ html:lang(ml) {
     transparent 0 13px,
     color-mix(in srgb, var(--color-brand) 9%, transparent) 13px 14px
   );
-}
-
-/* Pointer follower. */
-.cursor-dot {
-  width: 2.75rem;
-  height: 2.75rem;
-  margin: -1.375rem 0 0 -1.375rem;
-  border-radius: 9999px;
-  border: 1.5px solid var(--color-gold);
-  background-color: var(--color-gold);
-  opacity: 0;
-  scale: 0.2;
-  transition:
-    scale 280ms cubic-bezier(0.22, 0.68, 0.36, 1),
-    background-color 280ms ease;
-}
-
-.cursor-dot.is-over {
-  scale: 1;
-  background-color: transparent;
 }
 
 @media (prefers-reduced-motion: reduce) {

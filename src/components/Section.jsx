@@ -31,7 +31,7 @@ export default function Section({ id, heading, action, tone = 'light', className
                 <Words text={heading} />
                 <span
                   aria-hidden="true"
-                  className="section-rule mt-4 block h-1 w-16 origin-left bg-gold"
+                  className="section-rule mt-4 block h-1 w-16 origin-left rounded-full bg-gold"
                 />
               </h2>
             )}

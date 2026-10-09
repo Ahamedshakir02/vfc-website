@@ -1,11 +1,15 @@
+import Cut from './Cut.jsx'
 import Words from './motion/Words.jsx'
 import { gsap, EASE, introDelay, useGsap } from '../lib/motion.js'
+import { usePageTitle } from '../lib/usePageTitle.js'
 
 /**
  * Head of every inner page: the home hero's purple field and diagonal cut,
  * with the page title set as large as it will go.
  */
 export default function PageHero({ heading, lede, children }) {
+  usePageTitle(heading)
+
   const ref = useGsap(() => {
     const tl = gsap.timeline({ delay: introDelay(), defaults: { ease: EASE } })
     tl.from('.word', { yPercent: 115, duration: 1.1, stagger: 0.07 })
@@ -21,12 +25,12 @@ export default function PageHero({ heading, lede, children }) {
   }, [heading])
 
   return (
-    <section ref={ref} className="cut-bottom bg-brand text-white">
-      <div className="page-copy mx-auto max-w-6xl px-5 pb-28 pt-36 sm:px-8 sm:pb-40 sm:pt-48">
+    <section ref={ref} className="relative overflow-hidden bg-brand text-white">
+      <div className="page-copy mx-auto max-w-6xl will-change-transform px-5 pb-28 pt-36 sm:px-8 sm:pb-40 sm:pt-48">
         <h1 className="display-xl font-extrabold">
           <Words text={heading} />
         </h1>
-        <span aria-hidden="true" className="page-rule mt-6 block h-1 w-20 origin-left bg-gold" />
+        <span aria-hidden="true" className="page-rule mt-6 block h-1 w-20 origin-left rounded-full bg-gold" />
         {lede && (
           <p className="page-fade mt-7 max-w-2xl text-lg leading-relaxed text-white/80 sm:text-xl">
             {lede}
@@ -34,6 +38,7 @@ export default function PageHero({ heading, lede, children }) {
         )}
         {children && <div className="page-fade mt-8">{children}</div>}
       </div>
+      <Cut />
     </section>
   )
 }

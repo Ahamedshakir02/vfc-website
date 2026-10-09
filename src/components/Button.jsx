@@ -2,11 +2,11 @@ import { Link } from 'react-router-dom'
 import { gsap, MOTION_OK } from '../lib/motion.js'
 
 /**
- * Flat, square-cornered buttons.
+ * Flat buttons with eased corners.
  *
- * The brief rules out pill shapes and the rounded-card-with-shadow kit: this
- * is a crest/badge identity, not a SaaS product. So: hard edges, flat fill,
- * no shadow, no arrow suffix. On hover the second colour rises from the
+ * The brief rules out pill shapes and the card-with-shadow kit: this is a
+ * crest/badge identity, not a SaaS product. So: a small corner radius, flat
+ * fill, no shadow, no arrow suffix. On hover the second colour rises from the
  * bottom edge, and with a mouse the button leans toward the pointer.
  */
 const variants = {
@@ -40,7 +40,7 @@ function settle(e) {
 
 export default function Button({ to, href, variant = 'brand', className = '', children, ...rest }) {
   const classes = [
-    'relative isolate inline-flex items-center justify-center overflow-hidden px-7 py-3.5 text-sm font-semibold',
+    'relative isolate inline-flex items-center justify-center overflow-hidden rounded-control px-7 py-3.5 text-sm font-semibold',
     'transition-colors duration-300',
     "before:absolute before:inset-0 before:-z-10 before:origin-bottom before:scale-y-0 before:content-['']",
     'before:transition-transform before:duration-300 before:ease-out hover:before:scale-y-100',
