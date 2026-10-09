@@ -1,0 +1,61 @@
+{
+  "projectId": "3edb6a5b-cf8b-4657-abda-34668fb53692",
+  "pkg": "vfc-club-website",
+  "globalName": "VFC",
+  "shape": "package",
+  "buildCmd": "npm run build:kit",
+  "cssEntry": "dist-kit/kit.css",
+  "componentSrcMap": {
+    "Route": null,
+    "VfcProvider": null
+  },
+  "provider": {
+    "component": "VfcProvider",
+    "props": {
+      "motion": false
+    }
+  },
+  "overrides": {
+    "Footer": {
+      "cardMode": "column"
+    },
+    "Header": {
+      "cardMode": "single",
+      "primaryStory": "OverThePurpleHero",
+      "viewport": "1200x220"
+    },
+    "Marquee": {
+      "cardMode": "column"
+    },
+    "PageHero": {
+      "cardMode": "column"
+    },
+    "PageTransition": {
+      "cardMode": "single",
+      "primaryStory": "RendersTheCurrentRoute"
+    },
+    "Section": {
+      "cardMode": "column"
+    },
+    "Cut": {
+      "cardMode": "column"
+    },
+    "ScrollProgress": {
+      "cardMode": "single",
+      "primaryStory": "AlongTheBottomEdge"
+    },
+    "PhotoPlaceholder": {
+      "cardMode": "column"
+    },
+    "PlaceholderArt": {
+      "cardMode": "column"
+    },
+    "Reveal": {
+      "cardMode": "column"
+    },
+    "Words": {
+      "cardMode": "column"
+    }
+  },
+  "readmeHeader": ".design-sync/conventions.md"
+}
