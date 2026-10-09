@@ -13,6 +13,8 @@ export default function PageTransition({ children }) {
   const [shown, setShown] = useState(location)
   const curtain = useRef(null)
   const line = useRef(null)
+  // True from the moment a route curtain starts until it has fully cleared.
+  const inFlight = useRef(false)
 
   // First visit: take over from the static boot screen in index.html.
   useLayoutEffect(() => {
@@ -40,6 +42,13 @@ export default function PageTransition({ children }) {
   useEffect(() => {
     if (location.pathname === shown.pathname) {
       if (location !== shown) setShown(location)
+      // Back to the page already on screen while the curtain was on its way
+      // in (a quick click, then Back): send it out again rather than leave it
+      // stranded half across the page.
+      if (inFlight.current) {
+        inFlight.current = false
+        gsap.to(curtain.current, { yPercent: 125, duration: 0.35, ease: 'power3.out' })
+      }
       return undefined
     }
 
@@ -54,7 +63,12 @@ export default function PageTransition({ children }) {
       return undefined
     }
 
-    const tl = gsap.timeline()
+    inFlight.current = true
+    const tl = gsap.timeline({
+      onComplete: () => {
+        inFlight.current = false
+      },
+    })
     tl.set(curtain.current, { yPercent: 125 })
       .to(curtain.current, { yPercent: 0, duration: 0.42, ease: 'expo.inOut' })
       .add(swap)
