@@ -13,6 +13,7 @@ import { useLang } from '../i18n/LanguageContext.jsx'
 import { strings } from '../i18n/strings.js'
 import { gsap, EASE, introDelay, prefersReducedMotion, useGsap } from '../lib/motion.js'
 import { usePageTitle } from '../lib/usePageTitle.js'
+import crestWhite from '../assets/vfc-crest-white.png'
 import { AWARD_PLACEHOLDERS, GALLERY_PLACEHOLDERS, IMPACT_STATS } from '../data/placeholders.js'
 
 /**
@@ -158,7 +159,7 @@ function Hero() {
               <circle className="pitch-line" cx="200" cy="200" r="198" pathLength="1" strokeDasharray="1" />
             </svg>
             <img
-              src="/logo/vfc-crest-white.png"
+              src={crestWhite}
               alt=""
               aria-hidden="true"
               className="hero-crest relative w-52 lg:w-60"

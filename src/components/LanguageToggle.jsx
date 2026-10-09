@@ -17,7 +17,7 @@ export default function LanguageToggle({ onDark = false }) {
           type="button"
           onClick={() => setLang(l.code)}
           aria-pressed={lang === l.code}
-          className={`px-3 py-1 text-sm transition-colors ${lang === l.code ? active : ''}`}
+          className={`px-3 py-1.5 text-xs font-medium transition-colors ${lang === l.code ? active : ''}`}
         >
           {l.label}
         </button>

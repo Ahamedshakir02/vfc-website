@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useLang } from '../i18n/LanguageContext.jsx'
 import { strings } from '../i18n/strings.js'
+import Button from './Button.jsx'
+import crestWhite from '../assets/vfc-crest-white.png'
+import crestPurple from '../assets/vfc-crest-purple.png'
 import LanguageToggle from './LanguageToggle.jsx'
 
 // Events is listed but not built yet - stage 2 owns that page.
@@ -10,13 +13,14 @@ const links = [
   { to: '/about', key: 'about' },
   { to: '/awards', key: 'awards' },
   { to: '/gallery', key: 'gallery' },
-  { to: '/contact', key: 'contact' },
 ]
+// On wide screens Contact is the button at the end of the bar, not a nav link.
+const contact = { to: '/contact', key: 'contact' }
 
 /**
- * Every page opens on a purple field, so the header starts clear and white on
- * top of it, turns solid once the page has moved, and steps out of the way
- * while you scroll down.
+ * A single floating bar. Every page opens on a purple field, so it starts
+ * clear with white lettering; once the page has moved it becomes a solid,
+ * rounded strip, and it steps out of the way while you scroll down.
  */
 export default function Header() {
   const { t } = useLang()
@@ -56,47 +60,59 @@ export default function Header() {
 
   const light = !solid || open
 
+  // The current page sits on a soft tab; the rest brighten on hover.
   const linkClass = ({ isActive }) =>
     [
-      'link-grow px-1 py-1 text-sm font-medium transition-colors duration-300',
-      light ? 'text-white' : 'text-ink',
-      isActive ? '[background-size:100%_2px]' : 'opacity-80 hover:opacity-100',
+      'rounded-control px-3 py-1.5 text-sm font-medium transition-colors duration-300',
+      light
+        ? isActive
+          ? 'bg-white/15 text-white'
+          : 'text-white/80 hover:bg-white/10 hover:text-white'
+        : isActive
+          ? 'bg-brand/10 text-brand'
+          : 'text-ink/75 hover:bg-brand/5 hover:text-brand',
     ].join(' ')
 
   return (
     <>
       <header
         className={[
-          'fixed inset-x-0 top-0 z-50 transition-[transform,background-color,border-color] duration-300 will-change-transform',
-          // Keyboard focus inside the header always brings it back into view.
-          hidden && !open ? '-translate-y-full focus-within:translate-y-0' : 'translate-y-0',
-          light ? 'border-b border-transparent bg-transparent' : 'border-b border-brand/10 bg-sand',
+          'fixed inset-x-0 top-0 z-50 px-3 pt-3 transition-transform duration-300 will-change-transform',
+          // Keyboard focus inside the header brings it back into view. Mouse
+          // clicks don't count, or it would never hide again after a click.
+          hidden && !open ? '-translate-y-[130%] has-[:focus-visible]:translate-y-0' : 'translate-y-0',
         ].join(' ')}
       >
-        <div className="mx-auto flex max-w-6xl items-center gap-4 px-5 py-3 sm:px-8">
-          <Link to="/" className="flex items-center gap-3">
+        {/* Narrower than the page column by its own padding, so the crest lines up with the content below. */}
+        <div
+          className={[
+            'mx-auto flex max-w-[calc(72rem-1.5rem)] items-center gap-3 rounded-tile border py-2 pl-2 pr-2 transition-colors duration-300 sm:pl-5 sm:pr-3',
+            light ? 'border-transparent bg-transparent' : 'border-brand/10 bg-sand',
+          ].join(' ')}
+        >
+          <Link to="/" className="flex items-center gap-3 rounded-control">
             <span className="relative block h-11 w-8">
               <img
-                src="/logo/vfc-crest-purple.png"
+                src={crestPurple}
                 alt="VFC Arts, Sports & Welfare Club"
                 className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-300 ${light ? 'opacity-0' : 'opacity-100'}`}
               />
               <img
-                src="/logo/vfc-crest-white.png"
+                src={crestWhite}
                 alt=""
                 aria-hidden="true"
                 className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-300 ${light ? 'opacity-100' : 'opacity-0'}`}
               />
             </span>
             <span
-              className={`hidden font-display text-sm font-bold leading-tight transition-colors duration-300 sm:block ${light ? 'text-white' : 'text-brand'}`}
+              className={`hidden font-display text-sm font-bold leading-tight transition-colors duration-300 lg:block ${light ? 'text-white' : 'text-brand'}`}
             >
               VFC Arts, Sports
               <br />& Welfare Club
             </span>
           </Link>
 
-          <nav className="ml-auto hidden items-center gap-6 md:flex">
+          <nav className="mx-auto hidden items-center gap-1 md:flex">
             {links.map((l) => (
               <NavLink key={l.to} to={l.to} end={l.end} className={linkClass}>
                 {t(strings.nav[l.key])}
@@ -104,13 +120,19 @@ export default function Header() {
             ))}
           </nav>
 
-          <div className="ml-auto md:ml-2">
+          <div className="ml-auto flex items-center gap-2 md:ml-0">
             <LanguageToggle onDark={light} />
+            {/* Phones get Contact in the menu sheet instead. */}
+            <span className="hidden md:block">
+              <Button to={contact.to} variant="gold" size="sm">
+                {t(strings.nav[contact.key])}
+              </Button>
+            </span>
           </div>
 
           <button
             type="button"
-            className="relative h-10 w-10 rounded-control md:hidden"
+            className="relative h-10 w-10 shrink-0 rounded-control md:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label="Menu"
@@ -121,7 +143,7 @@ export default function Header() {
                 key={i}
                 aria-hidden="true"
                 className={[
-                  'absolute left-2 right-2 h-0.5 transition-[transform,top,background-color] duration-300',
+                  'absolute left-2 right-2 h-0.5 rounded-full transition-[transform,top,background-color] duration-300',
                   light ? 'bg-white' : 'bg-brand',
                   open ? 'top-[19px]' : i === 0 ? 'top-[15px]' : 'top-[23px]',
                   open ? (i === 0 ? 'rotate-45' : '-rotate-45') : '',
@@ -144,8 +166,8 @@ export default function Header() {
             : 'invisible [clip-path:polygon(0_0,100%_0,100%_0,0_0)]',
         ].join(' ')}
       >
-        {links.map((l, i) => (
-          <span key={l.to} className="block overflow-hidden py-1">
+        {[...links, contact].map((l, i) => (
+          <span key={l.to} className="block overflow-hidden border-b border-white/10 py-2">
             <NavLink
               to={l.to}
               end={l.end}
@@ -163,6 +185,12 @@ export default function Header() {
             </NavLink>
           </span>
         ))}
+        <p
+          style={{ transitionDelay: open ? '520ms' : '0ms' }}
+          className={`mt-8 text-sm text-white/60 transition-opacity duration-500 ${open ? 'opacity-100' : 'opacity-0'}`}
+        >
+          {t(strings.home.heroTagline)}
+        </p>
       </nav>
     </>
   )

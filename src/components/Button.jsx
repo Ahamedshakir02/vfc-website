@@ -38,9 +38,16 @@ function settle(e) {
   gsap.to(e.currentTarget, { x: 0, y: 0, duration: 0.7, ease: 'elastic.out(1, 0.45)' })
 }
 
-export default function Button({ to, href, variant = 'brand', className = '', children, ...rest }) {
+// `sm` is for tight spots such as the header bar.
+const sizes = {
+  md: 'px-7 py-3.5',
+  sm: 'px-4 py-2',
+}
+
+export default function Button({ to, href, variant = 'brand', size = 'md', className = '', children, ...rest }) {
   const classes = [
-    'relative isolate inline-flex items-center justify-center overflow-hidden rounded-control px-7 py-3.5 text-sm font-semibold',
+    'relative isolate inline-flex items-center justify-center overflow-hidden rounded-control text-sm font-semibold',
+    sizes[size],
     'transition-colors duration-300',
     "before:absolute before:inset-0 before:-z-10 before:origin-bottom before:scale-y-0 before:content-['']",
     'before:transition-transform before:duration-300 before:ease-out hover:before:scale-y-100',

@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Routes, useLocation } from 'react-router-dom'
 import { gsap, ScrollTrigger, markBooted, prefersReducedMotion } from '../lib/motion.js'
 import { scrollToTop } from '../lib/ScrollSync.jsx'
+import crestWhite from '../assets/vfc-crest-white.png'
 
 /**
  * Loader and route curtain in one: a purple sheet with the same diagonal edge
@@ -89,7 +90,7 @@ export default function PageTransition({ children }) {
       >
         <div className="absolute inset-0 -skew-y-3 bg-brand-deep" />
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6">
-          <img src="/logo/vfc-crest-white.png" alt="" className="w-16 sm:w-20" />
+          <img src={crestWhite} alt="" className="w-16 sm:w-20" />
           <span ref={line} className="block h-0.5 w-28 origin-left bg-gold" />
         </div>
       </div>
