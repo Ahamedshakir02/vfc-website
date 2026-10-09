@@ -11,3 +11,6 @@ ds-bundle/
 .design-sync/.cache/
 .design-sync/learnings/
 .design-sync/node_modules
+
+# Full-size illustration originals; the JPG copies beside them are tracked
+design/illustrations/*.png
