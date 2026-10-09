@@ -10,7 +10,7 @@ const SIZE = 22
  */
 export default function ScrollProgress() {
   const ref = useGsap(() => {
-    const whole = { start: 0, end: 'max', scrub: 0.4, invalidateOnRefresh: true }
+    const whole = { start: 0, end: 'max', scrub: 0.25, invalidateOnRefresh: true }
     const travel = () => window.innerWidth - SIZE
 
     gsap.fromTo('.progress-line', { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: whole })
@@ -45,7 +45,7 @@ export default function ScrollProgress() {
     <div
       ref={ref}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-40 motion-reduce:hidden"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-30 motion-reduce:hidden"
     >
       <div className="progress-ball absolute bottom-0.5 left-0" style={{ width: SIZE, height: SIZE }}>
         <Ball id="progress-ball" className="block h-full w-full" />

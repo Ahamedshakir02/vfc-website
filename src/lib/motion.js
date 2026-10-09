@@ -41,4 +41,4 @@ let booted = false
 export const markBooted = () => {
   booted = true
 }
-export const introDelay = () => (booted ? 0.4 : 1.45)
+export const introDelay = () => (booted ? 0.3 : 1.0)

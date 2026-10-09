@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useLang } from '../i18n/LanguageContext.jsx'
 import { strings } from '../i18n/strings.js'
-import { getLenis } from '../lib/SmoothScroll.jsx'
 import LanguageToggle from './LanguageToggle.jsx'
 
 // Events is listed but not built yet - stage 2 owns that page.
@@ -42,9 +41,6 @@ export default function Header() {
   // The menu closes on navigation and holds the page still while it is open.
   useEffect(() => setOpen(false), [pathname])
   useEffect(() => {
-    const lenis = getLenis()
-    if (open) lenis?.stop()
-    else lenis?.start()
     document.documentElement.style.overflow = open ? 'hidden' : ''
     return () => {
       document.documentElement.style.overflow = ''
@@ -71,9 +67,10 @@ export default function Header() {
     <>
       <header
         className={[
-          'fixed inset-x-0 top-0 z-50 transition-[transform,background-color,border-color] duration-500',
-          hidden && !open ? '-translate-y-full' : 'translate-y-0',
-          light ? 'border-b border-transparent bg-transparent' : 'border-b border-brand/10 bg-sand/90 backdrop-blur',
+          'fixed inset-x-0 top-0 z-50 transition-[transform,background-color,border-color] duration-300 will-change-transform',
+          // Keyboard focus inside the header always brings it back into view.
+          hidden && !open ? '-translate-y-full focus-within:translate-y-0' : 'translate-y-0',
+          light ? 'border-b border-transparent bg-transparent' : 'border-b border-brand/10 bg-sand',
         ].join(' ')}
       >
         <div className="mx-auto flex max-w-6xl items-center gap-4 px-5 py-3 sm:px-8">
@@ -113,7 +110,7 @@ export default function Header() {
 
           <button
             type="button"
-            className="relative h-10 w-10 md:hidden"
+            className="relative h-10 w-10 rounded-control md:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label="Menu"

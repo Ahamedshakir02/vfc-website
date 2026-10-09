@@ -1,10 +1,11 @@
 import { Route } from 'react-router-dom'
+import { useLang } from './i18n/LanguageContext.jsx'
+import { strings } from './i18n/strings.js'
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
-import Cursor from './components/Cursor.jsx'
 import ScrollProgress from './components/ScrollProgress.jsx'
 import PageTransition from './components/PageTransition.jsx'
-import SmoothScroll from './lib/SmoothScroll.jsx'
+import ScrollSync from './lib/ScrollSync.jsx'
 import Home from './pages/Home.jsx'
 import About from './pages/About.jsx'
 import Awards from './pages/Awards.jsx'
@@ -13,11 +14,20 @@ import Contact from './pages/Contact.jsx'
 import NotFound from './pages/NotFound.jsx'
 
 export default function App() {
+  const { t } = useLang()
+
   return (
-    <SmoothScroll>
+    <ScrollSync>
       <div className="flex min-h-screen flex-col">
+        {/* First stop for keyboard users: jump past the navigation. */}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-control focus:bg-gold focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-brand-deep"
+        >
+          {t(strings.actions.skipToContent)}
+        </a>
         <Header />
-        <main className="flex-1">
+        <main id="main" tabIndex={-1} className="flex-1 outline-none">
           {/* Owns the routes: it holds the old page on screen until the curtain covers it. */}
           <PageTransition>
             <Route path="/" element={<Home />} />
@@ -31,8 +41,7 @@ export default function App() {
         </main>
         <Footer />
         <ScrollProgress />
-        <Cursor />
       </div>
-    </SmoothScroll>
+    </ScrollSync>
   )
 }

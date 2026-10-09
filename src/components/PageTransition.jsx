@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Routes, useLocation } from 'react-router-dom'
 import { gsap, ScrollTrigger, markBooted, prefersReducedMotion } from '../lib/motion.js'
-import { scrollToTop } from '../lib/SmoothScroll.jsx'
+import { scrollToTop } from '../lib/ScrollSync.jsx'
 
 /**
  * Loader and route curtain in one: a purple sheet with the same diagonal edge
@@ -25,13 +25,13 @@ export default function PageTransition({ children }) {
     }
 
     const tl = gsap.timeline({ onComplete: markBooted })
-    tl.fromTo(line.current, { scaleX: 0 }, { scaleX: 1, duration: 0.85, ease: 'power2.inOut' })
-      .to(line.current, { opacity: 0, duration: 0.2 }, 0.85)
+    tl.fromTo(line.current, { scaleX: 0 }, { scaleX: 1, duration: 0.55, ease: 'power2.inOut' })
+      .to(line.current, { opacity: 0, duration: 0.2 }, 0.55)
       .fromTo(
         curtain.current,
         { yPercent: 0 },
-        { yPercent: -125, duration: 0.95, ease: 'expo.inOut' },
-        0.85,
+        { yPercent: -125, duration: 0.8, ease: 'expo.inOut' },
+        0.55,
       )
     return () => tl.kill()
   }, [])
@@ -56,9 +56,9 @@ export default function PageTransition({ children }) {
 
     const tl = gsap.timeline()
     tl.set(curtain.current, { yPercent: 125 })
-      .to(curtain.current, { yPercent: 0, duration: 0.55, ease: 'expo.inOut' })
+      .to(curtain.current, { yPercent: 0, duration: 0.42, ease: 'expo.inOut' })
       .add(swap)
-      .to(curtain.current, { yPercent: -125, duration: 0.75, ease: 'expo.inOut' }, '+=0.08')
+      .to(curtain.current, { yPercent: -125, duration: 0.6, ease: 'expo.inOut' }, '+=0.04')
     return () => tl.kill()
     // `shown` is deliberately left out: it changes as a result of this effect.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -71,7 +71,7 @@ export default function PageTransition({ children }) {
       <div
         ref={curtain}
         aria-hidden="true"
-        className="pointer-events-none fixed inset-x-0 -top-[12vh] z-[90] h-[124vh]"
+        className="pointer-events-none fixed inset-x-0 -top-[12vh] z-[90] h-[124vh] will-change-transform"
       >
         <div className="absolute inset-0 -skew-y-3 bg-brand-deep" />
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-6">

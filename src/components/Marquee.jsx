@@ -16,22 +16,33 @@ export default function Marquee({ items, className = '' }) {
     // Start well into the loop so there is room to run backwards.
     drift.totalTime(drift.duration() * 50)
 
+    // One running value eased back to normal speed each frame, instead of
+    // spawning a new tween for every scroll event.
+    let direction = 1
+    let boost = 1
+    const ease = () => {
+      boost += (1 - boost) * 0.07
+      drift.timeScale(direction * boost)
+    }
+
     ScrollTrigger.create({
       trigger: ref.current,
       start: 'top bottom',
       end: 'bottom top',
-      onToggle: (self) => drift.paused(!self.isActive),
+      // Only costs anything while the band is actually on screen.
+      onToggle: (self) => {
+        drift.paused(!self.isActive)
+        if (self.isActive) gsap.ticker.add(ease)
+        else gsap.ticker.remove(ease)
+      },
       onUpdate: (self) => {
         const velocity = self.getVelocity()
-        const direction = velocity < 0 ? -1 : 1
-        const boost = gsap.utils.clamp(1, 7, 1 + Math.abs(velocity) / 350)
-        gsap.killTweensOf(drift)
-        gsap
-          .timeline()
-          .to(drift, { timeScale: direction * boost, duration: 0.2, ease: 'power2.out' })
-          .to(drift, { timeScale: direction, duration: 1.1, ease: 'power2.out' })
+        direction = velocity < 0 ? -1 : 1
+        boost = Math.max(boost, gsap.utils.clamp(1, 6, 1 + Math.abs(velocity) / 400))
       },
     })
+
+    return () => gsap.ticker.remove(ease)
   }, [items.join('|')])
 
   const row = (hidden) => (
