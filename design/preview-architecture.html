@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How the VFC site fits together</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Chettan+2:wght@600;700;800&family=Noto+Sans:wght@400;500;600&display=swap">
+<style>
+body{margin:0}
+a{color:#432d84}a:hover{color:#2e1f5c}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1180px; box-sizing: border-box; padding: 64px; background: #faf8f4; color: #221c3a; font-family: 'Noto Sans', system-ui, sans-serif; line-height: 1.45; display: flex; flex-direction: column; gap: 36px">
+
+<div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 32px">
+<div>
+<h1 style="margin: 0; font-family: 'Baloo Chettan 2', sans-serif; font-weight: 800; font-size: 64px; line-height: 1; color: #432d84">How the site fits together</h1>
+<span style="display: block; margin-top: 18px; width: 80px; height: 4px; border-radius: 4px; background: #c89b3c"></span>
+</div>
+<p style="margin: 0; max-width: 520px; font-size: 18px; color: #3d3654">Events move to the centre. Every page leads to the open event, the event page takes the registration, and one admin screen is where the club checks payments.</p>
+</div>
+
+<div style="flex: 1 1 auto; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+
+<section style="padding: 28px; border-radius: 14px; background: #ffffff; border: 1px solid rgba(67,45,132,0.15); display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-family: 'Baloo Chettan 2', sans-serif; font-weight: 700; font-size: 28px; color: #432d84">What visitors see</h2>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<li style="padding: 14px 16px; border-radius: 8px; background: #432d84; color: #ffffff"><div style="font-weight: 600">Home</div><div style="font-size: 14px; color: rgba(255,255,255,0.86)">Hero, the open event, about, awards, gallery, contact in the footer</div></li>
+<li style="padding: 14px 16px; border-radius: 8px; background: #e9e4f4"><div style="font-weight: 600">Events</div><div style="font-size: 14px; color: #3d3654">Open, upcoming and past, in that order</div></li>
+<li style="padding: 14px 16px; border-radius: 8px; background: #c89b3c; color: #2e1f5c"><div style="font-weight: 600">Event page</div><div style="font-size: 14px">Facts, how it works, and the registration form</div></li>
+<li style="padding: 14px 16px; border-radius: 8px; background: #e9e4f4"><div style="font-weight: 600">About, Awards, Gallery</div><div style="font-size: 14px; color: #3d3654">The club's story, its shelf, its photos</div></li>
+<li style="padding: 14px 16px; border-radius: 8px; background: #e9e4f4"><div style="font-weight: 600">Contact</div><div style="font-size: 14px; color: #3d3654">Address, phone, email, map</div></li>
+</ul>
+<p style="margin: auto 0 0; font-size: 14px; color: #5b5670">English and Malayalam on every page.</p>
+</section>
+
+<section style="padding: 28px; border-radius: 14px; background: #ffffff; border: 1px solid rgba(67,45,132,0.15); display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-family: 'Baloo Chettan 2', sans-serif; font-weight: 700; font-size: 28px; color: #432d84">Registering</h2>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<li style="display: flex; gap: 14px; padding: 14px 16px; border-radius: 8px; background: #faf8f4"><span style="flex: 0 0 32px; height: 32px; border-radius: 8px; background: #432d84; color: #ffffff; display: flex; align-items: center; justify-content: center; font-family: 'Baloo Chettan 2', sans-serif; font-weight: 700">1</span><div><div style="font-weight: 600">Sees the open event</div><div style="font-size: 14px; color: #3d3654">On Home, in Events, or from a shared link</div></div></li>
+<li style="display: flex; gap: 14px; padding: 14px 16px; border-radius: 8px; background: #faf8f4"><span style="flex: 0 0 32px; height: 32px; border-radius: 8px; background: #432d84; color: #ffffff; display: flex; align-items: center; justify-content: center; font-family: 'Baloo Chettan 2', sans-serif; font-weight: 700">2</span><div><div style="font-weight: 600">Fills in the form</div><div style="font-size: 14px; color: #3d3654">Name, phone, category, team</div></div></li>
+<li style="display: flex; gap: 14px; padding: 14px 16px; border-radius: 8px; background: #faf8f4"><span style="flex: 0 0 32px; height: 32px; border-radius: 8px; background: #432d84; color: #ffffff; display: flex; align-items: center; justify-content: center; font-family: 'Baloo Chettan 2', sans-serif; font-weight: 700">3</span><div><div style="font-weight: 600">Pays by UPI</div><div style="font-size: 14px; color: #3d3654">In their own UPI app, then adds the reference and a screenshot</div></div></li>
+<li style="display: flex; gap: 14px; padding: 14px 16px; border-radius: 8px; background: #faf8f4"><span style="flex: 0 0 32px; height: 32px; border-radius: 8px; background: #432d84; color: #ffffff; display: flex; align-items: center; justify-content: center; font-family: 'Baloo Chettan 2', sans-serif; font-weight: 700">4</span><div><div style="font-weight: 600">Submits</div><div style="font-size: 14px; color: #3d3654">Saved as "to check"; the page says what happens next</div></div></li>
+<li style="display: flex; gap: 14px; padding: 14px 16px; border-radius: 8px; background: #faf8f4"><span style="flex: 0 0 32px; height: 32px; border-radius: 8px; background: #432d84; color: #ffffff; display: flex; align-items: center; justify-content: center; font-family: 'Baloo Chettan 2', sans-serif; font-weight: 700">5</span><div><div style="font-weight: 600">Club verifies</div><div style="font-size: 14px; color: #3d3654">A volunteer checks the payment and calls to confirm</div></div></li>
+</ol>
+<p style="margin: auto 0 0; font-size: 14px; color: #5b5670">No money moves through the site.</p>
+</section>
+
+<section style="padding: 28px; border-radius: 14px; background: #2e1f5c; color: #ffffff; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-family: 'Baloo Chettan 2', sans-serif; font-weight: 700; font-size: 28px">What the club runs</h2>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<li style="padding: 14px 16px; border-radius: 8px; background: rgba(255,255,255,0.1)"><div style="font-weight: 600">Sign in</div><div style="font-size: 14px; color: rgba(255,255,255,0.86)">Club officers only</div></li>
+<li style="padding: 14px 16px; border-radius: 8px; background: #c89b3c; color: #2e1f5c"><div style="font-weight: 600">Registrations</div><div style="font-size: 14px">Check payments, mark verified, export the list</div></li>
+<li style="padding: 14px 16px; border-radius: 8px; background: rgba(255,255,255,0.1)"><div style="font-weight: 600">Events</div><div style="font-size: 14px; color: rgba(255,255,255,0.86)">Create, open and close registration</div></li>
+<li style="padding: 14px 16px; border-radius: 8px; background: rgba(255,255,255,0.1)"><div style="font-weight: 600">Awards</div><div style="font-size: 14px; color: rgba(255,255,255,0.86)">Add to the shelf</div></li>
+<li style="padding: 14px 16px; border-radius: 8px; background: rgba(255,255,255,0.1)"><div style="font-weight: 600">Gallery</div><div style="font-size: 14px; color: rgba(255,255,255,0.86)">Upload and caption photos</div></li>
+</ul>
+<p style="margin: auto 0 0; font-size: 14px; color: rgba(255,255,255,0.8)">Until this is built, registrations are read in the Firebase console.</p>
+</section>
+
+<section style="padding: 28px; border-radius: 14px; background: #ffffff; border: 1px solid rgba(67,45,132,0.15); display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-family: 'Baloo Chettan 2', sans-serif; font-weight: 700; font-size: 28px; color: #432d84">Where it is kept</h2>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<li style="padding: 14px 16px; border-radius: 8px; border: 1px solid rgba(67,45,132,0.2)"><div style="font-weight: 600">events</div><div style="font-size: 14px; color: #3d3654">Title, date, venue, status: upcoming, open, closed</div></li>
+<li style="padding: 14px 16px; border-radius: 8px; border: 1px solid rgba(67,45,132,0.2)"><div style="font-weight: 600">registrations</div><div style="font-size: 14px; color: #3d3654">Who, which event, UPI reference, payment status</div></li>
+<li style="padding: 14px 16px; border-radius: 8px; border: 1px solid rgba(67,45,132,0.2)"><div style="font-weight: 600">awards and gallery</div><div style="font-size: 14px; color: #3d3654">Records in both languages, with images</div></li>
+<li style="padding: 14px 16px; border-radius: 8px; border: 1px solid rgba(67,45,132,0.2)"><div style="font-weight: 600">File storage</div><div style="font-size: 14px; color: #3d3654">Payment screenshots and photos</div></li>
+<li style="padding: 14px 16px; border-radius: 8px; border: 1px solid rgba(67,45,132,0.2)"><div style="font-weight: 600">Rules</div><div style="font-size: 14px; color: #3d3654">Anyone may add a registration; only officers may read them</div></li>
+</ul>
+<p style="margin: auto 0 0; font-size: 14px; color: #5b5670">Firebase: Firestore, Storage, Auth, Hosting.</p>
+</section>
+
+</div>
+
+<div>
+<h2 style="margin: 0 0 14px; font-family: 'Baloo Chettan 2', sans-serif; font-weight: 700; font-size: 28px; color: #432d84">Build order</h2>
+<ol style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+<li style="padding: 18px 20px; border-radius: 14px; background: #dcefe4; color: #17573a"><div style="font-size: 13px; font-weight: 600">Built</div><div style="margin-top: 2px; font-family: 'Baloo Chettan 2', sans-serif; font-weight: 700; font-size: 22px; line-height: 1.15">Public pages in two languages</div></li>
+<li style="padding: 18px 20px; border-radius: 14px; background: #c89b3c; color: #2e1f5c"><div style="font-size: 13px; font-weight: 600">Next</div><div style="margin-top: 2px; font-family: 'Baloo Chettan 2', sans-serif; font-weight: 700; font-size: 22px; line-height: 1.15">Events and the registration form</div></li>
+<li style="padding: 18px 20px; border-radius: 14px; background: #e9e4f4; color: #2e1f5c"><div style="font-size: 13px; font-weight: 600">After that</div><div style="margin-top: 2px; font-family: 'Baloo Chettan 2', sans-serif; font-weight: 700; font-size: 22px; line-height: 1.15">Admin sign-in and registrations</div></li>
+<li style="padding: 18px 20px; border-radius: 14px; border: 1px dashed #8f88a6; color: #3d3654"><div style="font-size: 13px; font-weight: 600">Later, once the bank account is set up</div><div style="margin-top: 2px; font-family: 'Baloo Chettan 2', sans-serif; font-weight: 700; font-size: 22px; line-height: 1.15">Online payment</div></li>
+</ol>
+</div>
+
+</div>
+</x-dc>
+</body>
+</html>
