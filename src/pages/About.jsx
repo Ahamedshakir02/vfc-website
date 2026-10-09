@@ -1,5 +1,5 @@
 import Section from '../components/Section.jsx'
-import Todo from '../components/Todo.jsx'
+import Sample from '../components/Sample.jsx'
 import PageHero from '../components/PageHero.jsx'
 import PhotoPlaceholder from '../components/PhotoPlaceholder.jsx'
 import Reveal from '../components/motion/Reveal.jsx'
@@ -26,22 +26,22 @@ export default function About() {
     })
   })
 
-  // The EN and ML sentences put the [area] blank in different positions, so
-  // each language gets its own assembly order rather than one shared template.
+  // The EN and ML sentences put the area in different positions, so each
+  // language gets its own assembly order rather than one shared template.
   const body =
     lang === 'ml' ? (
       <>
-        <Todo>{t(parts.area)}</Todo>
+        <Sample>{t(parts.area)}</Sample>
         {t(parts.leadB)}
-        <Todo>{t(parts.story)}</Todo>
+        <Sample>{t(parts.story)}</Sample>
         {t(parts.tail)}
       </>
     ) : (
       <>
         {t(parts.leadA)}
-        <Todo>{t(parts.area)}</Todo>
+        <Sample>{t(parts.area)}</Sample>
         {t(parts.leadB)}
-        <Todo>{t(parts.story)}</Todo>
+        <Sample>{t(parts.story)}</Sample>
         {t(parts.tail)}
       </>
     )
@@ -55,26 +55,24 @@ export default function About() {
           <Reveal stagger={0.12}>
             <p className="text-lg leading-relaxed text-ink/85 sm:text-xl sm:leading-relaxed">{body}</p>
 
-            <div className="mt-12 border-l-2 border-gold bg-sand p-6 sm:p-8">
+            <div className="mt-12 rounded-r-tile border-l-2 border-gold bg-sand p-6 sm:p-8">
               <h3 className="text-xl font-bold text-brand">{t(strings.home.impactHeading)}</h3>
               <p className="mt-3 leading-relaxed text-ink/75">{t(strings.home.impactBlurb)}</p>
             </div>
 
-            <div className="mt-8">
-              <Todo block>
-                [Club registration details — registered society/trust number and
-                certificate, Palakkad district. Marked TBD in the spec; add here
-                once the client provides it.]
-              </Todo>
-            </div>
+            {/*
+              TODO: club registration details — registered society/trust number
+              and certificate, Palakkad district. Marked TBD in the spec; add a
+              line here once the client provides it.
+            */}
           </Reveal>
 
           <div ref={photos} className="grid grid-cols-[1fr_0.8fr] items-start gap-4 md:pt-6">
             <div className="drift">
-              <PhotoPlaceholder label="TODO: [club / team photo]" ratio="aspect-[4/5]" />
+              <PhotoPlaceholder scene="centre" label={t(strings.name.sports)} ratio="aspect-[4/5]" />
             </div>
             <div className="drift mt-16">
-              <PhotoPlaceholder label="TODO: [community or charity activity photo]" ratio="aspect-[3/4]" />
+              <PhotoPlaceholder scene="together" label={t(strings.name.welfare)} ratio="aspect-[3/4]" />
             </div>
           </div>
         </div>
