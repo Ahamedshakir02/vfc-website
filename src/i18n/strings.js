@@ -4,8 +4,8 @@
  * IMPORTANT: The Malayalam is AI-drafted and still needs a native-speaker
  * review before launch (see spec: "Outstanding"). Do not treat it as final.
  *
- * Anything the copy doc left in [brackets] is kept as a TODO_ prefixed value
- * so it renders as a visible placeholder on the page - search for `TODO`.
+ * Anything the copy doc left in [brackets] is filled with sample content
+ * and rendered through <Sample> - see src/data/placeholders.js.
  *
  * NAME: the club is "VFC Arts, Sports & Welfare Club" per the spec and the
  * design brief. The copy doc still carries the older "Arts and Sports"
@@ -42,6 +42,9 @@ export const strings = {
     submitRegistration: { en: 'Submit registration', ml: 'രജിസ്ട്രേഷൻ സമർപ്പിക്കുക' },
     readMore: { en: 'Read more', ml: 'കൂടുതൽ വായിക്കുക' },
     viewAll: { en: 'View all', ml: 'എല്ലാം കാണുക' },
+    // Keyboard-only skip link. Not in the copy doc, so the Malayalam needs
+    // the same native-speaker check as the rest.
+    skipToContent: { en: 'Skip to content', ml: 'ഉള്ളടക്കത്തിലേക്ക് പോകുക' },
   },
 
   status: {
@@ -88,20 +91,22 @@ export const strings = {
 
   about: {
     heading: { en: 'About VFC', ml: 'വി.എഫ്.സിയെക്കുറിച്ച്' },
-    // The [brackets] below are split out into TODO chunks in aboutBodyParts.
     bodyParts: {
       leadA: {
         en: 'VFC Arts, Sports & Welfare Club was founded to give the people of ',
         ml: '',
       },
-      area: { en: 'TODO: [area]', ml: 'TODO: [പ്രദേശം]' },
+      // The locality is real (spec: Vellalur, Palakkad), written as on the crest.
+      area: { en: 'Vellalur', ml: 'Vellalur' },
       leadB: {
         en: ' a place to play, train, and grow — on the field and in the community. ',
         ml: ' ജനങ്ങൾക്ക് കളിക്കാനും പരിശീലിക്കാനും വളരാനുമുള്ള ഇടം നൽകുന്നതിനായി വി.എഫ്.സി ആർട്സ്, സ്പോർട്സ് & വെൽഫെയർ ക്ലബ് സ്ഥാപിതമായി — കളിക്കളത്തിലും സമൂഹത്തിലും. ',
       },
+      // Placeholder for the founding story. The year is real (crest: Estd 2009);
+      // the club still owes the story itself.
       story: {
-        en: 'TODO: [Add the real founding story / year / origin here.]',
-        ml: 'TODO: [യഥാർത്ഥ ചരിത്രം / വർഷം ഇവിടെ ചേർക്കുക.]',
+        en: 'The club was established in 2009.',
+        ml: '2009-ൽ ക്ലബ് സ്ഥാപിതമായി.',
       },
       tail: {
         en: " Today it's a club known for its sportsmanship, its events, and its commitment to giving back.",

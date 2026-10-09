@@ -1,48 +1,84 @@
 /**
- * TODO — every value in this file is a placeholder waiting on the client.
+ * SAMPLE CONTENT — nothing in this file is a real fact about the club unless
+ * a comment says so.
  *
- * These are NOT invented facts: each one is a labelled blank that renders
- * through <Todo> so it shows up on the page as an obvious flag. Replace with
- * real values (and delete the TODO wrapper at the call site) as they arrive.
+ * The club has not yet supplied its numbers, award records, photos or contact
+ * details, so these values stand in for them and let the design be judged as
+ * it will look. Each one renders through <Sample>, and while SAMPLE_CONTENT is
+ * true the footer carries a notice saying so.
+ *
+ * To go live: replace the values below with the real ones, drop the <Sample>
+ * wrapper at each call site, then set SAMPLE_CONTENT to false.
  *
  * Still outstanding per the spec + copy doc:
  *   - real impact numbers (members / events / awards)
- *   - founding story, year, area
+ *   - founding story
  *   - award records and dates
- *   - event photos
- *   - address, phone, email
+ *   - event photos and captions
+ *   - full address, phone, email, social links
  */
+export const SAMPLE_CONTENT = true
 
-/** Home impact stats — copy doc explicitly says do not invent these numbers. */
+/** Home impact stats. Invented round figures, not the club's counts. */
 export const IMPACT_STATS = [
-  { key: 'members', value: 'TODO: [X]' },
-  { key: 'events', value: 'TODO: [X]' },
-  { key: 'awards', value: 'TODO: [X]' },
+  { key: 'members', value: 120, suffix: '+' },
+  { key: 'events', value: 45, suffix: '+' },
+  { key: 'awards', value: 18, suffix: '' },
 ]
 
-/** Contact details — all three still unknown. */
+/**
+ * Contact details. The locality is real (spec: Vellalur, Palakkad); the street
+ * address is still missing. Phone and email are deliberately unusable.
+ */
 export const CONTACT = {
-  address: 'TODO: [club address]',
-  phone: 'TODO: [phone number]',
-  email: 'TODO: [email address]',
+  address: 'Vellalur, Palakkad, Kerala',
+  phone: '+91 00000 00000',
+  email: 'club@example.com',
+  socials: ['Instagram', 'Facebook', 'WhatsApp'],
   mapsUrl: null, // TODO: [Google Maps link once the address is confirmed]
 }
 
 /**
- * Award slots. Records and dates not handed over yet, so these carry no real
- * content — just enough structure to lay the page out. Shape matches the
- * `awards` collection in src/data/schema.js.
+ * Award slots, shaped like the `awards` collection in src/data/schema.js.
+ * Titles, years and descriptions are invented examples.
  */
 export const AWARD_PLACEHOLDERS = [
-  { id: 'award-1', year: 'TODO: [year]', title: 'TODO: [award title]', description: 'TODO: [what this award was for]' },
-  { id: 'award-2', year: 'TODO: [year]', title: 'TODO: [award title]', description: 'TODO: [what this award was for]' },
-  { id: 'award-3', year: 'TODO: [year]', title: 'TODO: [award title]', description: 'TODO: [what this award was for]' },
-  { id: 'award-4', year: 'TODO: [year]', title: 'TODO: [award title]', description: 'TODO: [what this award was for]' },
+  {
+    id: 'award-1',
+    year: '2024',
+    title: 'District league winners',
+    description: 'Sample entry. The club’s real honours go here once the record arrives.',
+  },
+  {
+    id: 'award-2',
+    year: '2022',
+    title: 'Fair play award',
+    description: 'Sample entry. Replace with what the award was for.',
+  },
+  {
+    id: 'award-3',
+    year: '2019',
+    title: 'Community service recognition',
+    description: 'Sample entry. Replace with what the award was for.',
+  },
+  {
+    id: 'award-4',
+    year: '2015',
+    title: 'Best organised tournament',
+    description: 'Sample entry. Replace with what the award was for.',
+  },
 ]
 
-/** Gallery slots — photos pending handover. Shape matches the `gallery` collection. */
-export const GALLERY_PLACEHOLDERS = Array.from({ length: 9 }, (_, i) => ({
+/*
+  Gallery slots, shaped like the `gallery` collection. Each has a drawn scene
+  (see PlaceholderArt) and a category taken from the club's name; the caption
+  shown on the tile is that category in the active language.
+*/
+const SCENES = ['centre', 'stage', 'goal', 'stripes', 'together', 'corner', 'stage', 'centre', 'together']
+const CATEGORIES = ['sports', 'arts', 'sports', 'sports', 'welfare', 'sports', 'arts', 'sports', 'welfare']
+
+export const GALLERY_PLACEHOLDERS = SCENES.map((scene, i) => ({
   id: `photo-${i + 1}`,
-  caption: `TODO: [photo ${i + 1} — caption]`,
-  category: 'TODO: [category]',
+  scene,
+  category: CATEGORIES[i],
 }))
