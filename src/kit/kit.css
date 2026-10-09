@@ -1,0 +1,6 @@
+/*
+  Stylesheet for the component kit: the site's own styles, plus the web fonts
+  that the site loads from a <link> in index.html.
+*/
+@import url("https://fonts.googleapis.com/css2?family=Baloo+Chettan+2:wght@600;700;800&family=Noto+Sans:wght@400;500;600&family=Noto+Sans+Malayalam:wght@400;500;600&display=swap");
+@import "../index.css";

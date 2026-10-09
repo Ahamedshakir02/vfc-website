@@ -13,8 +13,12 @@ function readStoredLang() {
   return 'en'
 }
 
-export function LanguageProvider({ children }) {
-  const [lang, setLang] = useState(readStoredLang)
+export function LanguageProvider({ children, initialLang }) {
+  // `initialLang` lets a host pick the language outright; the site itself
+  // leaves it off and resumes whatever the visitor last chose.
+  const [lang, setLang] = useState(() =>
+    initialLang === 'en' || initialLang === 'ml' ? initialLang : readStoredLang(),
+  )
 
   useEffect(() => {
     try {

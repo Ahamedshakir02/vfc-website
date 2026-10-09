@@ -3,3 +3,11 @@ dist
 .env
 .env.local
 .firebase
+
+# Component kit build (npm run build:kit) and design-sync working files
+dist-kit
+.ds-sync/
+ds-bundle/
+.design-sync/.cache/
+.design-sync/learnings/
+.design-sync/node_modules
