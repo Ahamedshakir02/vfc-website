@@ -22,9 +22,10 @@ npm run build      # outputs to dist/
 
 ## Motion
 
-GSAP + ScrollTrigger for choreography, Lenis for wheel smoothing. Everything is
-set up in `src/lib/motion.js` (`useGsap` scopes and cleans up animations and
-skips them entirely under `prefers-reduced-motion`) and `src/lib/SmoothScroll.jsx`.
+GSAP + ScrollTrigger for choreography; scrolling itself is the browser's own,
+so the page answers the wheel or finger immediately. Everything is set up in
+`src/lib/motion.js` (`useGsap` scopes and cleans up animations and skips them
+entirely under `prefers-reduced-motion`) and `src/lib/ScrollSync.jsx`.
 The intent behind each moment is in the "Motion" section of
 `vfc-club-design-brief.md`.
 
@@ -43,15 +44,18 @@ Hosting config is in `firebase.json` (SPA rewrite, serves `dist`).
 
 ## Placeholders
 
-Every bracketed placeholder from the copy doc renders through `<Todo>`
-(`src/components/Todo.jsx`) as a gold dashed chip — visible on the page, not
-buried in a comment. Find them all with:
+The club has not supplied its numbers, awards, photos or contact details yet,
+so the site runs on sample content: invented figures and awards, drawn scenes
+in place of photos (`src/components/PlaceholderArt.jsx`), and unusable contact
+details. Every sample value renders through `<Sample>`
+(`src/components/Sample.jsx`), and the footer shows a "Sample content" notice
+while `SAMPLE_CONTENT` is `true` in `src/data/placeholders.js`. Find them with:
 
 ```
-grep -rn "TODO" src/
+grep -rn "<Sample" src/
 ```
 
-Most live in one place: `src/data/placeholders.js`.
+Almost all of it lives in one place: `src/data/placeholders.js`.
 
 Still owed by the client: impact numbers, founding story/year/area, award records
 and dates, event photos, address/phone/email, social links, society registration
@@ -60,4 +64,4 @@ number.
 ## Before launch
 
 - Native-speaker review of the Malayalam in `src/i18n/strings.js` (AI-drafted).
-- Replace every `<Todo>` with real content.
+- Replace every `<Sample>` value with real content, then set `SAMPLE_CONTENT` to `false`.
