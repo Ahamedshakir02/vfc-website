@@ -5,11 +5,14 @@ service firebase.storage {
   match /b/{bucket}/o {
 
     // Payment screenshots: anyone may upload one image up to 5 MB to a new
-    // path. Nobody can read, replace or delete them from the site.
+    // path. Only club officers (an /admins document in Firestore, see
+    // firestore.rules) can open them, and nobody can replace or delete them.
     match /payment-screenshots/{eventId}/{file} {
       allow create: if request.resource.size < 5 * 1024 * 1024
           && request.resource.contentType.matches('image/.*');
-      allow read, update, delete: if false;
+      allow read: if request.auth != null
+          && firestore.exists(/databases/(default)/documents/admins/$(request.auth.uid));
+      allow update, delete: if false;
     }
   }
 }

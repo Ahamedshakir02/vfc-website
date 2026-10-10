@@ -1,12 +1,10 @@
 /**
  * Firebase app init only.
  *
- * Stage 1 (this build) is the public shell - nothing here reads or writes
- * Firestore yet. Firestore/Auth/Storage get wired in stage 2 alongside the
- * events page and the registration form.
- *
- * Collections the next stage will use (from the spec):
- *   events, registrations, awards, gallery  - see src/data/schema.js
+ * Firestore, Storage and Auth are loaded where they are used and nowhere
+ * else: src/lib/services.js holds the first two for the public form,
+ * src/lib/admin.js adds Auth for the officers' screens. The collections are
+ * listed in src/data/schema.js.
  */
 import { initializeApp, getApps } from 'firebase/app'
 

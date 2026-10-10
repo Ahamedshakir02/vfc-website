@@ -9,6 +9,9 @@ export const COLLECTIONS = {
   registrations: 'registrations',
   awards: 'awards',
   gallery: 'gallery',
+  // admins/{uid}: one empty document per club officer, added in the Firebase
+  // console. Its existence is what lets that account read registrations.
+  admins: 'admins',
 }
 
 export const EVENT_STATUS = {

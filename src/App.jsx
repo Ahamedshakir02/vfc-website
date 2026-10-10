@@ -1,4 +1,5 @@
-import { Route } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
+import { Route, useLocation } from 'react-router-dom'
 import { useLang } from './i18n/LanguageContext.jsx'
 import { strings } from './i18n/strings.js'
 import Header from './components/Header.jsx'
@@ -15,8 +16,21 @@ import Gallery from './pages/Gallery.jsx'
 import Contact from './pages/Contact.jsx'
 import NotFound from './pages/NotFound.jsx'
 
+// Fetched only at /admin, so visitors never download the officers' screens or Firebase Auth.
+const Admin = lazy(() => import('./pages/Admin.jsx'))
+
 export default function App() {
   const { t } = useLang()
+  const { pathname } = useLocation()
+
+  // The club's own screens stand apart from the public site: no header, footer or curtain.
+  if (pathname === '/admin' || pathname.startsWith('/admin/')) {
+    return (
+      <Suspense fallback={null}>
+        <Admin />
+      </Suspense>
+    )
+  }
 
   return (
     <ScrollSync>
