@@ -1,0 +1,38 @@
+rules_version = '2';
+
+// Not deployed automatically. Review, then: firebase deploy --only firestore:rules
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Site content is public to read. It is edited in the Firebase console
+    // until the admin screens exist, so no client may write it.
+    match /events/{id} { allow read: if true; allow write: if false; }
+    match /awards/{id} { allow read: if true; allow write: if false; }
+    match /gallery/{id} { allow read: if true; allow write: if false; }
+
+    // Anyone may add a registration, exactly once and only in the expected
+    // shape. Nobody can read, change or delete one from the site: the club
+    // reviews them in the Firebase console.
+    match /registrations/{id} {
+      allow create: if request.resource.data.keys().hasOnly([
+            'eventId', 'name', 'phone', 'email', 'category', 'teamName',
+            'paymentRef', 'paymentScreenshotPath', 'paymentStatus', 'createdAt'
+          ])
+          && request.resource.data.eventId is string
+          && request.resource.data.name is string
+          && request.resource.data.name.size() >= 2
+          && request.resource.data.name.size() <= 120
+          && request.resource.data.phone.matches('^[6-9][0-9]{9}$')
+          && request.resource.data.email is string
+          && request.resource.data.email.size() <= 200
+          && request.resource.data.category is string
+          && request.resource.data.teamName is string
+          && request.resource.data.teamName.size() <= 120
+          && request.resource.data.paymentRef.matches('^[A-Za-z0-9]{8,35}$')
+          && request.resource.data.paymentScreenshotPath.matches('^payment-screenshots/.+')
+          && request.resource.data.paymentStatus == 'pending'
+          && request.resource.data.createdAt == request.time;
+      allow read, update, delete: if false;
+    }
+  }
+}

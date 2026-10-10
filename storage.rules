@@ -1,0 +1,15 @@
+rules_version = '2';
+
+// Not deployed automatically. Review, then: firebase deploy --only storage
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Payment screenshots: anyone may upload one image up to 5 MB to a new
+    // path. Nobody can read, replace or delete them from the site.
+    match /payment-screenshots/{eventId}/{file} {
+      allow create: if request.resource.size < 5 * 1024 * 1024
+          && request.resource.contentType.matches('image/.*');
+      allow read, update, delete: if false;
+    }
+  }
+}

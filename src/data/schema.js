@@ -45,7 +45,7 @@ export const registrationFields = [
   'category',
   'teamName', // optional
   'paymentRef',
-  'paymentScreenshotUrl',
+  'paymentScreenshotPath', // Storage path, not a public URL: only officers may read it
   'paymentStatus', // pending | verified
   'createdAt',
 ]

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useLang } from '../i18n/LanguageContext.jsx'
 import { strings } from '../i18n/strings.js'
 import { CONTACT, SAMPLE_CONTENT } from '../data/placeholders.js'
+import { getOpenEvent } from '../data/events.js'
 import { gsap, useGsap } from '../lib/motion.js'
 import Button from './Button.jsx'
 import crestWhite from '../assets/vfc-crest-white.png'
@@ -10,6 +11,7 @@ import Sample from './Sample.jsx'
 
 const links = [
   { to: '/', key: 'home' },
+  { to: '/events', key: 'events' },
   { to: '/about', key: 'about' },
   { to: '/awards', key: 'awards' },
   { to: '/gallery', key: 'gallery' },
@@ -29,6 +31,12 @@ export default function Footer() {
     { label: t(strings.contact.phone), value: CONTACT.phone },
     { label: t(strings.contact.email), value: CONTACT.email },
   ]
+
+  // Same rule as the header bar: while an event is open, the button registers for it.
+  const openEvent = getOpenEvent()
+  const action = openEvent
+    ? { to: `/events/${openEvent.id}`, label: t(strings.actions.registerNow) }
+    : { to: '/contact', label: t(strings.contact.heading) }
 
   // The oversized club mark rises into place as the page runs out.
   const ref = useGsap(() => {
@@ -57,20 +65,20 @@ export default function Footer() {
                 VFC Arts, Sports
                 <br />& Welfare Club
               </span>
-              <span className="mt-1.5 block text-sm text-gold">{t(strings.home.heroTagline)}</span>
+              <span className="mt-1.5 block text-sm text-gold">{t(strings.footer.place)}</span>
             </span>
           </Link>
-          <Button to="/contact" variant="gold">
-            {t(strings.contact.heading)}
+          <Button to={action.to} variant="gold">
+            {action.label}
           </Button>
         </div>
 
         <div className="grid gap-10 py-12 md:grid-cols-[1fr_2fr] md:gap-16">
           <nav aria-label="Footer">
-            <ul className="grid grid-cols-2 gap-x-8 gap-y-3 text-sm text-white/75 sm:max-w-xs">
+            <ul className="grid grid-cols-2 gap-x-8 text-sm text-white/75 sm:max-w-xs">
               {links.map((l) => (
                 <li key={l.to}>
-                  <Link to={l.to} className="link-grow transition-colors hover:text-white">
+                  <Link to={l.to} className="inline-flex min-h-11 items-center underline-offset-4 transition-colors hover:text-white hover:underline">
                     {t(strings.nav[l.key])}
                   </Link>
                 </li>

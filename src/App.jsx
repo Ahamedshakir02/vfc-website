@@ -9,6 +9,8 @@ import ScrollSync from './lib/ScrollSync.jsx'
 import Home from './pages/Home.jsx'
 import About from './pages/About.jsx'
 import Awards from './pages/Awards.jsx'
+import Events from './pages/Events.jsx'
+import EventPage from './pages/EventPage.jsx'
 import Gallery from './pages/Gallery.jsx'
 import Contact from './pages/Contact.jsx'
 import NotFound from './pages/NotFound.jsx'
@@ -34,8 +36,9 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/awards" element={<Awards />} />
             <Route path="/gallery" element={<Gallery />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/events/:id" element={<EventPage />} />
             <Route path="/contact" element={<Contact />} />
-            {/* TODO (stage 2): /events and /events/:id with the registration form. */}
             <Route path="*" element={<NotFound />} />
           </PageTransition>
         </main>

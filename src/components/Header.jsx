@@ -2,19 +2,21 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useLang } from '../i18n/LanguageContext.jsx'
 import { strings } from '../i18n/strings.js'
+import { getOpenEvent } from '../data/events.js'
 import Button from './Button.jsx'
 import crestWhite from '../assets/vfc-crest-white.png'
 import crestPurple from '../assets/vfc-crest-purple.png'
 import LanguageToggle from './LanguageToggle.jsx'
 
-// Events is listed but not built yet - stage 2 owns that page.
 const links = [
   { to: '/', key: 'home', end: true },
+  { to: '/events', key: 'events' },
   { to: '/about', key: 'about' },
   { to: '/awards', key: 'awards' },
   { to: '/gallery', key: 'gallery' },
 ]
-// On wide screens Contact is the button at the end of the bar, not a nav link.
+// Contact lives in the phone menu and the footer; the bar keeps its one
+// button for the thing people come to do.
 const contact = { to: '/contact', key: 'contact' }
 
 /**
@@ -59,6 +61,12 @@ export default function Header() {
   }, [open])
 
   const light = !solid || open
+
+  // While an event is taking registrations the bar's button goes straight to it.
+  const openEvent = getOpenEvent()
+  const action = openEvent
+    ? { to: `/events/${openEvent.id}`, label: t(strings.actions.registerNow) }
+    : { to: contact.to, label: t(strings.nav[contact.key]) }
 
   // The current page sits on a soft tab; the rest brighten on hover.
   const linkClass = ({ isActive }) =>
@@ -122,10 +130,10 @@ export default function Header() {
 
           <div className="ml-auto flex items-center gap-2 md:ml-0">
             <LanguageToggle onDark={light} />
-            {/* Phones get Contact in the menu sheet instead. */}
+            {/* Phones reach this from the menu sheet and the page itself. */}
             <span className="hidden md:block">
-              <Button to={contact.to} variant="gold" size="sm">
-                {t(strings.nav[contact.key])}
+              <Button to={action.to} variant="gold" size="sm">
+                {action.label}
               </Button>
             </span>
           </div>
