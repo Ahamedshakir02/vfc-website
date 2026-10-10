@@ -45,7 +45,7 @@ export default function Gallery() {
 
       <Section tone="white">
         {/*
-          Drawn stand-ins until the event photos arrive (see
+          Collage illustrations until the event photos arrive (see
           src/data/placeholders.js). Swap in real images and captions, and
           drop any tiles that aren't needed.
         */}
@@ -53,7 +53,7 @@ export default function Gallery() {
           {GALLERY_PLACEHOLDERS.map((photo, i) => (
             <PhotoPlaceholder
               key={photo.id}
-              scene={photo.scene}
+              image={photo.image}
               label={t(strings.name[photo.category])}
               className={SPANS[i % SPANS.length]}
             />

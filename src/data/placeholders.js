@@ -70,15 +70,17 @@ export const AWARD_PLACEHOLDERS = [
 ]
 
 /*
-  Gallery slots, shaped like the `gallery` collection. Each has a drawn scene
-  (see PlaceholderArt) and a category taken from the club's name; the caption
-  shown on the tile is that category in the active language.
+  Gallery slots, shaped like the `gallery` collection. Each holds one of the
+  collage illustrations (see src/data/illustrations.js) and a category taken
+  from the club's name; the caption shown on the tile is that category in the
+  active language. The illustrations are artwork, not photos of club events:
+  real photographs replace them here as they arrive.
 */
-const SCENES = ['centre', 'stage', 'goal', 'stripes', 'together', 'corner', 'stage', 'centre', 'together']
-const CATEGORIES = ['sports', 'arts', 'sports', 'sports', 'welfare', 'sports', 'arts', 'sports', 'welfare']
+const IMAGES = ['volleyball', 'drummers', 'badminton', 'cricket', 'community', 'runner', 'dancer', 'footballer', 'trophy']
+const CATEGORIES = ['sports', 'arts', 'sports', 'sports', 'welfare', 'sports', 'arts', 'sports', 'sports']
 
-export const GALLERY_PLACEHOLDERS = SCENES.map((scene, i) => ({
+export const GALLERY_PLACEHOLDERS = IMAGES.map((image, i) => ({
   id: `photo-${i + 1}`,
-  scene,
+  image,
   category: CATEGORIES[i],
 }))

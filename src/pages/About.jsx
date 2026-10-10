@@ -69,10 +69,10 @@ export default function About() {
 
           <div ref={photos} className="grid grid-cols-[1fr_0.8fr] items-start gap-4 md:pt-6">
             <div className="drift">
-              <PhotoPlaceholder scene="centre" label={t(strings.name.sports)} ratio="aspect-[4/5]" />
+              <PhotoPlaceholder image="athlete" label={t(strings.name.sports)} ratio="aspect-[4/5]" />
             </div>
             <div className="drift mt-16">
-              <PhotoPlaceholder scene="together" label={t(strings.name.welfare)} ratio="aspect-[3/4]" />
+              <PhotoPlaceholder image="community" label={t(strings.name.welfare)} ratio="aspect-[3/4]" />
             </div>
           </div>
         </div>
