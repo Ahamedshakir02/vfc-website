@@ -4,6 +4,9 @@ dist
 .env.local
 .firebase
 
+# Written by the Firebase emulators (npm run emulators)
+*-debug.log
+
 # Component kit build (npm run build:kit) and design-sync working files
 dist-kit
 .ds-sync/

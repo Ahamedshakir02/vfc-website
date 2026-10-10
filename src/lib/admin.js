@@ -5,10 +5,10 @@
  * Only the admin page imports this, and that page is fetched on demand, so
  * none of it (Auth least of all) is downloaded by visitors to the public site.
  */
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { connectAuthEmulator, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { collection, doc, getDoc, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
-import { app, isFirebaseConfigured } from './firebase.js'
+import { EMULATOR_HOST, EMULATOR_PORTS, app, emulated, isFirebaseConfigured } from './firebase.js'
 import { db, storage } from './services.js'
 import { COLLECTIONS } from '../data/schema.js'
 
@@ -16,6 +16,7 @@ import { COLLECTIONS } from '../data/schema.js'
 export const canUseAdmin = isFirebaseConfigured
 
 const auth = app ? getAuth(app) : null
+if (emulated) connectAuthEmulator(auth, `http://${EMULATOR_HOST}:${EMULATOR_PORTS.auth}`, { disableWarnings: true })
 
 export const ROLE = {
   officer: 'officer',
