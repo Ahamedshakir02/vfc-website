@@ -5,12 +5,14 @@ and `vfc-club-website-copy.md` for the source copy.
 
 ## Stage status
 
-**Stage 1 (this build) — public shell.** Home, About, Awards, Gallery, Contact.
-Bilingual EN/ML with a language toggle. All copy is verbatim from the copy doc.
-No Firestore reads or writes.
+**Public site.** Home, Events, an event page with its registration form, About,
+Awards, Gallery, Contact. Bilingual EN/ML with a language toggle.
 
-**Stage 2 (next) — not built.** `/events`, the District Football League event page,
-and the registration form that writes to Firestore.
+**Admin, at `/admin`.** Officers sign in and check registrations: view each
+payment screenshot, mark it verified, export the list. English only.
+
+**Not built.** Admin screens for events, awards and the gallery (events still
+come from `src/data/events.js`), and online payment.
 
 ## Run
 
@@ -37,10 +39,55 @@ the purple crest, and a white version of the same crest for purple surfaces.
 
 `.env.example` → copy to `.env.local` and fill from the Firebase console.
 `src/lib/firebase.js` initialises the app only and no-ops without config, so the
-public shell runs fine with no `.env.local`. `src/data/schema.js` documents the
-four Firestore collections from the spec.
+public pages run fine with no `.env.local`. `src/data/schema.js` documents the
+Firestore collections.
 
 Hosting config is in `firebase.json` (SPA rewrite, serves `dist`).
+
+### Registration
+
+The form on an open event's page stays visible but switched off until three
+things are set: the Firebase values, `VITE_CLUB_UPI_ID`, and the event's `fee`
+in `src/data/events.js`. Nothing is charged through the site: the visitor pays
+in their own UPI app, then gives the reference number and a screenshot.
+
+### Admin
+
+In the Firebase console, once:
+
+1. Authentication: enable the Email/Password provider and add a user for each
+   officer.
+2. Firestore: for each of those users, add an empty document at
+   `admins/<their user UID>`. That document is what grants access; a signed-in
+   account without one is told so and shown its UID.
+3. Deploy the rules: `firebase deploy --only firestore:rules,storage`. The
+   Storage rules look officers up in Firestore, so the CLI asks once to allow
+   that.
+
+What an officer can and cannot do is enforced by `firestore.rules` and
+`storage.rules`, not by the page: officers read registrations and screenshots
+and change `paymentStatus`, and nothing else.
+
+### Trying it locally
+
+No Firebase project is needed. With the Firebase CLI and Java installed:
+
+```
+npm run emulators                     # Auth, Firestore and Storage on this machine
+```
+
+and in `.env.local`:
+
+```
+VITE_FIREBASE_EMULATORS=true
+VITE_CLUB_UPI_ID=test@upi
+```
+
+then `npm run dev`. Give the league a `fee` in `src/data/events.js` to switch
+the form on. To sign in at `/admin`, add a user in the emulator UI
+(http://127.0.0.1:4000, Authentication) and an empty `admins/<UID>` document
+(Firestore). Emulator data is discarded when the emulators stop.
+`VITE_FIREBASE_EMULATORS` is ignored by `npm run build`.
 
 ## Placeholders
 
