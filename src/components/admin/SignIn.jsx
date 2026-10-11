@@ -1,5 +1,6 @@
 import { useId, useState } from 'react'
 import { signIn } from '../../lib/admin.js'
+import { emulated } from '../../lib/firebase.js'
 
 const inputClass = 'h-13 w-full rounded-control border border-ink/40 bg-white px-4 text-base text-ink outline-offset-2'
 
@@ -10,6 +11,12 @@ const REASONS = {
   'auth/user-disabled': 'This account has been switched off. Ask the club secretary.',
 }
 const WRONG_DETAILS = 'That email and password do not match an account.'
+
+// `npm run demo` makes one officer account in the local emulators, from the
+// values in .env.demo. Offered here only while the site runs on the emulators.
+const DEMO = emulated && import.meta.env.VITE_DEMO_ADMIN_EMAIL
+  ? { email: import.meta.env.VITE_DEMO_ADMIN_EMAIL, password: import.meta.env.VITE_DEMO_ADMIN_PASSWORD ?? '' }
+  : null
 
 /** Email and password. Accounts are made in the Firebase console, never here. */
 export default function SignIn() {
@@ -77,6 +84,23 @@ export default function SignIn() {
         <p role="alert" className="font-semibold text-[#a3261c]">
           {problem}
         </p>
+      )}
+
+      {DEMO && (
+        <div className="rounded-control bg-sand p-4 text-sm text-ink/80">
+          <p>Demo mode: this site is running on the local emulators, with one demo officer account.</p>
+          <button
+            type="button"
+            onClick={() => {
+              setEmail(DEMO.email)
+              setPassword(DEMO.password)
+              setProblem('')
+            }}
+            className="mt-2 font-semibold text-brand underline underline-offset-4"
+          >
+            Fill in the demo account
+          </button>
+        </div>
       )}
 
       <button

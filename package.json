@@ -10,7 +10,8 @@
     "build": "vite build",
     "build:kit": "vite build --config vite.kit.config.js",
     "preview": "vite preview",
-    "emulators": "firebase emulators:start --only auth,firestore,storage --project demo-vfc"
+    "demo": "node scripts/demo.mjs",
+    "emulators": "firebase emulators:start --only auth,firestore,storage,functions --project demo-vfc"
   },
   "dependencies": {
     "firebase": "^11.1.0",
