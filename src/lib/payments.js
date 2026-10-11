@@ -60,7 +60,7 @@ export class PaymentError extends Error {
  *
  * `askDemo` shows the stand-in payment page and resolves true or false; it is
  * only ever used for a demo order, which only the local emulators hand out.
- * Resolves with `{ paymentId }` when registered, or `null` if the payer backs out.
+ * Resolves with `{ registrationId, paymentId }` when registered, or `null` if the payer backs out.
  */
 export async function payAndRegister(event, details, askDemo) {
   let order
@@ -76,7 +76,7 @@ export async function payAndRegister(event, details, askDemo) {
 
   try {
     const { data } = await confirm({ orderId: order.orderId })
-    return { paymentId: data.paymentId }
+    return { registrationId: data.registrationId, paymentId: data.paymentId }
   } catch {
     // The webhook may still register them; either way they must not pay twice.
     throw new PaymentError('confirm', order.orderId)

@@ -12,6 +12,7 @@ import {
 } from '../lib/registrations.js'
 import { PAYMENT_METHOD } from '../data/schema.js'
 import Sample from './Sample.jsx'
+import Invoice from './Invoice.jsx'
 
 const EMPTY = { name: '', phone: '', email: '', category: '', teamName: '', paymentRef: '', screenshot: null }
 
@@ -110,7 +111,7 @@ export default function RegistrationForm({ event }) {
   const [errors, setErrors] = useState({})
   const [state, setState] = useState('idle') // idle | sending | sent | failed
   const [problem, setProblem] = useState(null) // what to say when `failed`
-  const [receipt, setReceipt] = useState('')
+  const [invoice, setInvoice] = useState(null) // what was registered and paid, once it has gone through
   const [copied, setCopied] = useState(false)
   const [rejected, setRejected] = useState(0)
   const [chosen, setChosen] = useState(null)
@@ -155,6 +156,22 @@ export default function RegistrationForm({ event }) {
     }
   }
 
+  // The invoice number is the registration's own id, so the club can look it up.
+  const finish = (registrationId, paymentRef, paidOnline) => {
+    const details = tidyDetails(values)
+    setInvoice({
+      ...details,
+      number: `VFC-${registrationId.slice(0, 8).toUpperCase()}`,
+      date: new Date(),
+      eventTitle: event.title,
+      category: t(event.categories?.find((category) => category.id === details.category)?.label),
+      amount: fee,
+      paymentRef,
+      online: paidOnline,
+    })
+    setState('sent')
+  }
+
   const fail = (message) => {
     setProblem(message)
     setState('failed')
@@ -177,8 +194,7 @@ export default function RegistrationForm({ event }) {
         fail(t(strings.form.payCancelled))
         return
       }
-      setReceipt(paid.paymentId)
-      setState('sent')
+      finish(paid.registrationId, paid.paymentId, true)
     } catch (error) {
       fail(
         error.stage === 'confirm'
@@ -206,8 +222,7 @@ export default function RegistrationForm({ event }) {
       return
     }
     try {
-      await submitRegistration(event.id, values)
-      setState('sent')
+      finish(await submitRegistration(event.id, values), values.paymentRef.trim(), false)
     } catch {
       fail(t(strings.form.failed))
     }
@@ -219,9 +234,10 @@ export default function RegistrationForm({ event }) {
     return (
       <div role="status" className="rounded-tile border border-brand/15 bg-white p-7 sm:p-9">
         <h2 className="text-3xl font-bold text-brand">{t(strings.form.heading)}</h2>
-        <p className="mt-4 break-words text-lg leading-relaxed">
-          {receipt ? t(strings.form.successOnline, { ref: receipt }) : t(strings.form.success)}
+        <p className="mb-6 mt-4 text-lg leading-relaxed">
+          {t(invoice.online ? strings.form.successOnline : strings.form.success)}
         </p>
+        <Invoice invoice={invoice} />
       </div>
     )
   }

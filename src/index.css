@@ -157,6 +157,24 @@ html:lang(ml) {
   );
 }
 
+/*
+  Printing after a registration puts the invoice alone on the paper: the page
+  steps aside and the copy kept outside it (Invoice.jsx) is shown instead.
+*/
+.print-only {
+  display: none;
+}
+
+@media print {
+  body:has(.print-only) > :not(.print-only) {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

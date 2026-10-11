@@ -221,8 +221,8 @@ export const strings = {
       ml: 'പേയ്മെന്റ് കൈകാര്യം ചെയ്യുന്നത് പേയ്മെന്റ് സേവനദാതാവാണ്. നിങ്ങളുടെ കാർഡ്, ബാങ്ക് വിവരങ്ങൾ ഈ സൈറ്റ് കാണുന്നില്ല.',
     },
     successOnline: {
-      en: 'Thanks — your payment went through and you are registered. Keep this payment ID for your records: {ref}',
-      ml: 'നന്ദി — പണം ലഭിച്ചു, നിങ്ങളുടെ രജിസ്ട്രേഷൻ പൂർത്തിയായി. ഈ പേയ്മെന്റ് ഐഡി സൂക്ഷിച്ചുവെക്കുക: {ref}',
+      en: 'Thanks — your payment went through and you are registered. Your invoice is below.',
+      ml: 'നന്ദി — പണം ലഭിച്ചു, നിങ്ങളുടെ രജിസ്ട്രേഷൻ പൂർത്തിയായി. നിങ്ങളുടെ ഇൻവോയ്സ് താഴെയുണ്ട്.',
     },
     payCancelled: {
       en: 'The payment was not completed, so you are not registered yet. Nothing was charged. You can try again.',
@@ -289,6 +289,27 @@ export const strings = {
       screenshotType: { en: 'Choose an image file.', ml: 'ഒരു ചിത്രം തിരഞ്ഞെടുക്കുക.' },
       screenshotSize: { en: 'The image must be under 5 MB.', ml: 'ചിത്രം 5 MB-ൽ താഴെയായിരിക്കണം.' },
     },
+  },
+
+  // The invoice a registrant is given once their registration has gone through.
+  invoice: {
+    title: { en: 'Invoice', ml: 'ഇൻവോയ്സ്' },
+    number: { en: 'No.', ml: 'നമ്പർ' },
+    item: { en: 'For', ml: 'വിവരണം' },
+    entryFee: { en: 'Entry fee: {event}', ml: 'പ്രവേശന ഫീസ്: {event}' },
+    total: { en: 'Total', ml: 'ആകെ' },
+    paidBy: { en: 'Paid by', ml: 'പണമടച്ച രീതി' },
+    online: { en: 'Online payment', ml: 'ഓൺലൈൻ പേയ്മെന്റ്' },
+    upi: { en: 'UPI transfer', ml: 'UPI കൈമാറ്റം' },
+    reference: { en: 'Payment reference', ml: 'പേയ്മെന്റ് റഫറൻസ്' },
+    status: { en: 'Status', ml: 'നില' },
+    paid: { en: 'Paid', ml: 'പണം ലഭിച്ചു' },
+    toVerify: { en: 'Waiting for the club to verify', ml: 'ക്ലബ്ബിന്റെ പരിശോധന കാത്തിരിക്കുന്നു' },
+    upiNote: {
+      en: 'This records what you told us. Your place is confirmed once the club has checked the payment.',
+      ml: 'നിങ്ങൾ നൽകിയ വിവരങ്ങളുടെ രേഖയാണിത്. ക്ലബ് പേയ്മെന്റ് പരിശോധിച്ച ശേഷമേ നിങ്ങളുടെ സ്ഥാനം ഉറപ്പാകൂ.',
+    },
+    download: { en: 'Print or save the invoice', ml: 'ഇൻവോയ്സ് പ്രിന്റ് ചെയ്യുക / സേവ് ചെയ്യുക' },
   },
 
   // Sample lines under the three pillars on the home page. Not from the copy
