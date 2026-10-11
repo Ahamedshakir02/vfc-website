@@ -1,13 +1,25 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink, Navigate, Route, Routes } from 'react-router-dom'
 import SignIn from '../components/admin/SignIn.jsx'
 import Registrations from '../components/admin/Registrations.jsx'
+import Events from '../components/admin/Events.jsx'
+import Gallery from '../components/admin/Gallery.jsx'
+import Awards from '../components/admin/Awards.jsx'
+import Club from '../components/admin/Club.jsx'
 import { ROLE, canUseAdmin, signOutOfficer, watchSession } from '../lib/admin.js'
 import { usePageTitle } from '../lib/usePageTitle.js'
 import crestWhite from '../assets/vfc-crest-white.png'
 
 const sideButton =
   'inline-flex h-11 items-center justify-center rounded-control border border-white/30 px-4 text-sm font-medium text-white transition-colors hover:bg-white hover:text-brand-deep'
+
+const SCREENS = [
+  { to: '/admin', name: 'Registrations', end: true },
+  { to: '/admin/events', name: 'Events' },
+  { to: '/admin/gallery', name: 'Gallery' },
+  { to: '/admin/awards', name: 'Awards' },
+  { to: '/admin/club', name: 'Club details' },
+]
 
 /** Everything short of the working screen: one white panel on the club's purple. */
 function Gate({ children }) {
@@ -23,7 +35,8 @@ function Gate({ children }) {
 }
 
 /**
- * The club's side of the site, at /admin: sign in, then check registrations.
+ * The club's side of the site, at /admin: sign in, then check registrations
+ * and edit what the site shows (events, gallery, awards, the club's details).
  *
  * In English only, for a handful of officers. Signing in proves who someone
  * is; what they may see is decided by the Firestore and Storage rules, not by
@@ -91,7 +104,7 @@ export default function Admin() {
           <>
             <h1 className="text-4xl font-extrabold text-brand">Not an officer account</h1>
             <p className="mt-3 text-ink/80">
-              {session.user.email} is signed in, but it has not been given access to registrations. Whoever looks
+              {session.user.email} is signed in, but it has not been given access to the club's screens. Whoever looks
               after the club's Firebase project can add it, using this account ID:
             </p>
             <p className="mt-3 break-all rounded-control bg-sand p-3 font-mono text-sm">{session.user.uid}</p>
@@ -120,11 +133,22 @@ export default function Admin() {
           </div>
         </div>
 
-        {/* Events, awards and the gallery join this list as their screens are built. */}
-        <nav aria-label="Admin" className="flex flex-col gap-1">
-          <Link to="/admin" aria-current="page" className="rounded-control bg-white/15 px-3.5 py-3 font-semibold">
-            Registrations
-          </Link>
+        {/* Scrolls sideways on a phone rather than pushing the page down. */}
+        <nav aria-label="Admin" className="order-last -mx-5 flex basis-full gap-1 overflow-x-auto px-5 md:order-none md:mx-0 md:basis-auto md:flex-col md:overflow-visible md:px-0">
+          {SCREENS.map((screen) => (
+            <NavLink
+              key={screen.to}
+              to={screen.to}
+              end={screen.end}
+              className={({ isActive }) =>
+                `whitespace-nowrap rounded-control px-3.5 py-3 font-semibold transition-colors ${
+                  isActive ? 'bg-white/15 text-white' : 'text-white/75 hover:bg-white/10 hover:text-white'
+                }`
+              }
+            >
+              {screen.name}
+            </NavLink>
+          ))}
         </nav>
 
         <div className="ml-auto flex flex-wrap items-center gap-2 md:ml-0 md:mt-auto md:flex-col md:items-stretch">
@@ -139,7 +163,14 @@ export default function Admin() {
       </aside>
 
       <main className="min-w-0 flex-1 px-5 pb-16 pt-8 sm:px-10 sm:pt-10">
-        <Registrations />
+        <Routes>
+          <Route path="/admin" element={<Registrations />} />
+          <Route path="/admin/events" element={<Events />} />
+          <Route path="/admin/gallery" element={<Gallery />} />
+          <Route path="/admin/awards" element={<Awards />} />
+          <Route path="/admin/club" element={<Club />} />
+          <Route path="*" element={<Navigate to="/admin" replace />} />
+        </Routes>
       </main>
     </div>
   )

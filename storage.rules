@@ -14,5 +14,18 @@ service firebase.storage {
           && firestore.exists(/databases/(default)/documents/admins/$(request.auth.uid));
       allow update, delete: if false;
     }
+
+    // The site's own pictures (event covers, gallery photos, award photos):
+    // anyone can see them, officers add and remove them.
+    match /site/{folder}/{file} {
+      allow read: if true;
+      allow create: if request.auth != null
+          && firestore.exists(/databases/(default)/documents/admins/$(request.auth.uid))
+          && request.resource.size < 5 * 1024 * 1024
+          && request.resource.contentType.matches('image/.*');
+      allow delete: if request.auth != null
+          && firestore.exists(/databases/(default)/documents/admins/$(request.auth.uid));
+      allow update: if false;
+    }
   }
 }

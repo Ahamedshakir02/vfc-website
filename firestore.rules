@@ -17,20 +17,37 @@ service cloud.firestore {
       allow list, write: if false;
     }
 
-    // Site content is public to read. It is edited in the Firebase console
-    // until its admin screens exist, so no client may write it.
-    match /events/{id} { allow read: if true; allow write: if false; }
-    match /awards/{id} { allow read: if true; allow write: if false; }
-    match /gallery/{id} { allow read: if true; allow write: if false; }
+    // Site content is public to read and edited by officers at /admin.
+    match /events/{id} {
+      allow read: if true;
+      allow delete: if isOfficer();
+      // The fee is what the payment function charges, so it must be a whole
+      // number of rupees or not set at all.
+      allow create, update: if isOfficer()
+          && request.resource.data.title.en is string
+          && request.resource.data.title.en.size() > 0
+          && request.resource.data.status in ['upcoming', 'open', 'closed']
+          && (request.resource.data.fee == null
+              || (request.resource.data.fee is int && request.resource.data.fee > 0));
+    }
+    match /awards/{id} { allow read: if true; allow write: if isOfficer(); }
+    match /gallery/{id} { allow read: if true; allow write: if isOfficer(); }
+    match /settings/{id} { allow read: if true; allow write: if isOfficer(); }
 
-    // Anyone may add a registration, exactly once and only in the expected
-    // shape. Only officers can read them, and the one thing an officer can
-    // change is whether the payment has been verified. Nobody can delete one.
+    // Online payments in progress belong to the Cloud Functions alone.
+    match /orders/{id} { allow read, write: if false; }
+
+    // Anyone may add a registration paid by UPI, exactly once, only in the
+    // expected shape and only as "pending". (One paid online is written by a
+    // Cloud Function, which is the only way to arrive already verified.) Only
+    // officers can read them, and the one thing an officer can change is
+    // whether the payment has been verified. Nobody can delete one.
     match /registrations/{id} {
       allow create: if request.resource.data.keys().hasOnly([
             'eventId', 'name', 'phone', 'email', 'category', 'teamName',
-            'paymentRef', 'paymentScreenshotPath', 'paymentStatus', 'createdAt'
+            'paymentMethod', 'paymentRef', 'paymentScreenshotPath', 'paymentStatus', 'createdAt'
           ])
+          && request.resource.data.paymentMethod == 'upi'
           && request.resource.data.eventId is string
           && request.resource.data.name is string
           && request.resource.data.name.size() >= 2

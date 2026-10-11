@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { EVENTS, getOpenEvent } from '../../data/events.js'
-import { PAYMENT_STATUS } from '../../data/schema.js'
+import { PAYMENT_METHOD, PAYMENT_STATUS } from '../../data/schema.js'
 import { getScreenshotUrl, setPaymentStatus, watchRegistrations } from '../../lib/admin.js'
+import { useContent } from '../../lib/content.jsx'
+import { quietButton, solidButton, tile } from './ui.jsx'
 
 const FILTERS = [
   { id: 'all', label: 'All', empty: 'No registrations for this event yet.' },
@@ -13,17 +14,13 @@ const FILTERS = [
   { id: PAYMENT_STATUS.verified, label: 'Verified', empty: 'No payment has been verified yet.' },
 ]
 
-const tile = 'rounded-tile border border-brand/15 bg-white'
-const quietButton =
-  'h-11 rounded-control border border-brand/35 px-4 text-sm font-semibold text-brand transition-colors hover:bg-brand hover:text-white disabled:cursor-not-allowed disabled:border-ink/20 disabled:text-ink/45 disabled:hover:bg-transparent'
-const solidButton =
-  'h-11 whitespace-nowrap rounded-control bg-brand px-4 text-sm font-semibold text-white transition-colors hover:bg-brand-deep'
-
 const isVerified = (row) => row.paymentStatus === PAYMENT_STATUS.verified
+// Paid through the gateway: a Cloud Function checked it, so there is nothing for an officer to do.
+const paidOnline = (row) => row.paymentMethod === PAYMENT_METHOD.online
 const received = (row) => row.createdAt?.toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) ?? ''
 
 /** The stored category is an id; show the name the registrant picked. */
-const categoryName = (event, id) => event.categories.find((category) => category.id === id)?.label.en ?? id
+const categoryName = (event, id) => event.categories?.find((category) => category.id === id)?.label.en ?? id
 
 /** Saves the event's whole list as a spreadsheet file, whatever filter is showing. */
 function exportList(event, rows) {
@@ -36,13 +33,14 @@ function exportList(event, rows) {
   }
 
   const lines = [
-    ['Name', 'Team', 'Phone', 'Email', 'Category', 'UPI reference', 'Payment', 'Received'],
+    ['Name', 'Team', 'Phone', 'Email', 'Category', 'Paid by', 'Payment reference', 'Payment', 'Received'],
     ...rows.map((row) => [
       row.name,
       row.teamName,
       row.phone,
       row.email,
       categoryName(event, row.category),
+      paidOnline(row) ? 'Online' : 'UPI',
       row.paymentRef,
       isVerified(row) ? 'Verified' : 'To check',
       received(row),
@@ -60,8 +58,8 @@ function exportList(event, rows) {
 
 function PaymentTag({ row }) {
   return isVerified(row) ? (
-    <span className="inline-block rounded-control bg-[#dcefe4] px-3 py-1.5 text-[0.8125rem] font-semibold text-[#17573a]">
-      Verified
+    <span className="inline-block whitespace-nowrap rounded-control bg-[#dcefe4] px-3 py-1.5 text-[0.8125rem] font-semibold text-[#17573a]">
+      {paidOnline(row) ? 'Paid online' : 'Verified'}
     </span>
   ) : (
     <span className="inline-block whitespace-nowrap rounded-control bg-[#f6e7c4] px-3 py-1.5 text-[0.8125rem] font-semibold text-[#6b4700]">
@@ -140,12 +138,17 @@ function Proof({ row, onVerify, onClose }) {
  * is compared with the club's bank statement, then marked verified.
  */
 export default function Registrations() {
-  const [eventId, setEventId] = useState(() => (getOpenEvent() ?? EVENTS[0]).id)
+  const { events, openEvent } = useContent()
+  const [chosenId, setEventId] = useState(null)
   const [filter, setFilter] = useState('all')
   const [rows, setRows] = useState(null) // null until the first answer arrives
   const [unreadable, setUnreadable] = useState(false)
   const [problem, setProblem] = useState('')
   const [proofId, setProofId] = useState(null)
+
+  // The open event to begin with; the first in the list if the chosen one is deleted.
+  const event = events.find((entry) => entry.id === chosenId) ?? openEvent ?? events[0]
+  const eventId = event.id
 
   useEffect(() => {
     setRows(null)
@@ -154,7 +157,6 @@ export default function Registrations() {
     return watchRegistrations(eventId, setRows, () => setUnreadable(true))
   }, [eventId])
 
-  const event = EVENTS.find((entry) => entry.id === eventId)
   const all = rows ?? []
   const verifiedCount = all.filter(isVerified).length
   const shown = all.filter((row) => filter === 'all' || (row.paymentStatus ?? PAYMENT_STATUS.pending) === filter)
@@ -198,7 +200,7 @@ export default function Registrations() {
             onChange={(e) => setEventId(e.target.value)}
             className="h-11 max-w-full rounded-control border border-ink/40 bg-white px-3 text-sm font-medium text-ink outline-offset-2"
           >
-            {EVENTS.map((entry) => (
+            {events.map((entry) => (
               <option key={entry.id} value={entry.id}>
                 {entry.title.en}
               </option>
@@ -265,7 +267,7 @@ export default function Registrations() {
                 <th scope="col" className="px-5 py-4 font-semibold">Name and team</th>
                 <th scope="col" className="px-5 py-4 font-semibold">Phone</th>
                 <th scope="col" className="px-5 py-4 font-semibold">Category</th>
-                <th scope="col" className="px-5 py-4 font-semibold">UPI reference</th>
+                <th scope="col" className="px-5 py-4 font-semibold">Payment reference</th>
                 <th scope="col" className="px-5 py-4 font-semibold">Payment</th>
                 <th scope="col" className="px-5 py-4 font-semibold">
                   <span className="sr-only">Actions</span>
@@ -292,19 +294,21 @@ export default function Registrations() {
                         Used on {timesUsed[row.paymentRef.toLowerCase()]} registrations
                       </div>
                     )}
-                    <button
-                      type="button"
-                      onClick={() => setProofId(row.id)}
-                      className="whitespace-nowrap text-[0.8125rem] font-semibold text-brand underline-offset-4 hover:underline"
-                    >
-                      View screenshot
-                    </button>
+                    {!paidOnline(row) && (
+                      <button
+                        type="button"
+                        onClick={() => setProofId(row.id)}
+                        className="whitespace-nowrap text-[0.8125rem] font-semibold text-brand underline-offset-4 hover:underline"
+                      >
+                        View screenshot
+                      </button>
+                    )}
                   </td>
                   <td className="px-5 py-4">
                     <PaymentTag row={row} />
                   </td>
                   <td className="px-5 py-4 text-right">
-                    {isVerified(row) ? (
+                    {paidOnline(row) ? null : isVerified(row) ? (
                       <button type="button" onClick={() => mark(row, PAYMENT_STATUS.pending)} className={quietButton}>
                         Undo
                       </button>
@@ -322,7 +326,8 @@ export default function Registrations() {
       )}
 
       <p className="mt-5 text-sm text-ink/65">
-        Check each UPI reference against the club's bank statement before marking it verified.
+        Check each UPI reference against the club's bank statement before marking it verified. Payments made online
+        are confirmed by the payment provider and need no checking.
       </p>
 
       {proof && (
