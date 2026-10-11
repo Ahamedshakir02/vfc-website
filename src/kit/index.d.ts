@@ -101,6 +101,10 @@ export declare function PageTransition(props: PageTransitionProps): ReactElement
 export interface PhotoPlaceholderProps {
   /** Caption tag shown bottom-left. */
   label?: string
+  /** Address of a real photo. Takes the place of the illustration or scene. */
+  src?: string
+  /** Whether the caption is placeholder text. @default true */
+  sample?: boolean
   /** Which drawn scene to show. @default "centre" */
   scene?: 'centre' | 'stage' | 'stripes' | 'goal' | 'corner' | 'together' | 'map'
   /** Aspect ratio class for a fixed shape, e.g. "aspect-[4/5]". Leave off inside a grid that sets the size. */
@@ -121,6 +125,8 @@ export interface PlaceholderArtProps {
 export declare function PlaceholderArt(props: PlaceholderArtProps): ReactElement
 
 export interface SampleProps {
+  /** Pass false for real content, which then renders unmarked. @default true */
+  when?: boolean
   children?: ReactNode
 }
 /** Marks a value as sample content. Renders as plain text with a tooltip and `data-sample`. */

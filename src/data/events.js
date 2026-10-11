@@ -7,8 +7,9 @@
  * extra events exist only so the list can be judged as it will look. Each
  * sample value renders through <Sample>.
  *
- * This is the stand-in for Firestore: when the admin screens exist, the same
- * shape is read from the `events` collection instead of this file.
+ * These are what the site shows until officers save events of their own at
+ * /admin; from then on the `events` collection is used instead (see
+ * src/lib/content.jsx). The admin screen can copy these in as a starting point.
  */
 import { EVENT_STATUS } from './schema.js'
 
@@ -75,8 +76,3 @@ export const EVENTS = [
     categories: [],
   },
 ]
-
-export const getEvent = (id) => EVENTS.find((event) => event.id === id) ?? null
-
-/** The event the site points people at: the first one taking registrations. */
-export const getOpenEvent = () => EVENTS.find((event) => event.status === EVENT_STATUS.open) ?? null

@@ -7,19 +7,24 @@ import EventStatus from '../components/EventStatus.jsx'
 import Reveal from '../components/motion/Reveal.jsx'
 import { useLang } from '../i18n/LanguageContext.jsx'
 import { strings } from '../i18n/strings.js'
-import { EVENTS } from '../data/events.js'
+import { useContent } from '../lib/content.jsx'
+import { eventImage, formatDate, isSampleField } from '../lib/format.js'
 import { EVENT_STATUS } from '../data/schema.js'
 import { ILLUSTRATIONS } from '../data/illustrations.js'
 
 const FILTERS = ['all', EVENT_STATUS.open, EVENT_STATUS.upcoming, EVENT_STATUS.closed]
 
 /** Sample events are flagged; the league is real and reads as plain text. */
-const Title = ({ event, t }) => (event.sample ? <Sample>{t(event.title)}</Sample> : t(event.title))
+const Title = ({ event, t }) => <Sample when={Boolean(event.sample)}>{t(event.title)}</Sample>
 
 /** The open event gets the full-width treatment: it is what the page is for. */
 function FeaturedEvent({ event }) {
-  const { t } = useLang()
-  const facts = [event.startsOn, event.venue, event.closesOn && `${t(strings.events.closes)}: ${event.closesOn}`].filter(Boolean)
+  const { t, lang } = useLang()
+  const facts = [
+    formatDate(event.startsOn, lang),
+    event.venue,
+    event.closesOn && `${t(strings.events.closes)}: ${formatDate(event.closesOn, lang)}`,
+  ].filter(Boolean)
 
   return (
     <Link
@@ -28,7 +33,7 @@ function FeaturedEvent({ event }) {
     >
       <div className="relative min-h-56 overflow-hidden">
         <img
-          src={ILLUSTRATIONS[event.image]}
+          src={eventImage(event)}
           alt=""
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
@@ -40,7 +45,15 @@ function FeaturedEvent({ event }) {
         </h2>
         <p className="max-w-xl text-white/85">{t(event.description)}</p>
         <p className="flex flex-wrap gap-x-8 gap-y-1 font-semibold">
-          {facts.length ? facts.map((fact) => <span key={fact}>{fact}</span>) : <Sample>{t(strings.events.toBeAnnounced)}</Sample>}
+          {facts.length ? (
+            facts.map((fact) => (
+              <span key={fact}>
+                <Sample when={Boolean(event.sample)}>{fact}</Sample>
+              </span>
+            ))
+          ) : (
+            <Sample>{t(strings.events.toBeAnnounced)}</Sample>
+          )}
         </p>
         <span className="mt-2 rounded-control bg-gold px-7 py-3.5 text-[0.9375rem] font-semibold text-brand-deep transition-colors duration-300 group-hover:bg-white">
           {t(strings.events.seeEvent)}
@@ -51,7 +64,7 @@ function FeaturedEvent({ event }) {
 }
 
 function EventRow({ event }) {
-  const { t } = useLang()
+  const { t, lang } = useLang()
 
   return (
     <li>
@@ -60,7 +73,7 @@ function EventRow({ event }) {
         className="flex flex-wrap items-center gap-x-6 gap-y-4 rounded-tile border border-brand/15 bg-white p-5 transition-colors duration-300 hover:bg-sand sm:p-6"
       >
         <img
-          src={ILLUSTRATIONS[event.image]}
+          src={eventImage(event)}
           alt=""
           loading="lazy"
           className="h-20 w-28 flex-none rounded-control object-cover"
@@ -70,7 +83,10 @@ function EventRow({ event }) {
             <Title event={event} t={t} />
           </h3>
           <p className="mt-1 text-ink/65">
-            <Sample>{event.startsOn ?? t(strings.events.toBeAnnounced)}</Sample>, {t(strings.name[event.category])}
+            <Sample when={!event.startsOn || isSampleField(event, 'startsOn')}>
+              {formatDate(event.startsOn, lang) ?? t(strings.events.toBeAnnounced)}
+            </Sample>
+            , {t(strings.name[event.category])}
           </p>
         </div>
         <EventStatus status={event.status} />
@@ -81,9 +97,10 @@ function EventRow({ event }) {
 
 export default function Events() {
   const { t } = useLang()
+  const { events } = useContent()
   const [filter, setFilter] = useState('all')
 
-  const shown = EVENTS.filter((event) => filter === 'all' || event.status === filter)
+  const shown = events.filter((event) => filter === 'all' || event.status === filter)
   const open = shown.filter((event) => event.status === EVENT_STATUS.open)
   const upcoming = shown.filter((event) => event.status === EVENT_STATUS.upcoming)
   const closed = shown.filter((event) => event.status === EVENT_STATUS.closed)

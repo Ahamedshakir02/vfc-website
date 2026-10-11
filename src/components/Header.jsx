@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useLang } from '../i18n/LanguageContext.jsx'
 import { strings } from '../i18n/strings.js'
-import { getOpenEvent } from '../data/events.js'
+import { useContent } from '../lib/content.jsx'
 import Button from './Button.jsx'
 import crestWhite from '../assets/vfc-crest-white.png'
 import crestPurple from '../assets/vfc-crest-purple.png'
@@ -63,7 +63,7 @@ export default function Header() {
   const light = !solid || open
 
   // While an event is taking registrations the bar's button goes straight to it.
-  const openEvent = getOpenEvent()
+  const { openEvent } = useContent()
   const action = openEvent
     ? { to: `/events/${openEvent.id}`, label: t(strings.actions.registerNow) }
     : { to: contact.to, label: t(strings.nav[contact.key]) }

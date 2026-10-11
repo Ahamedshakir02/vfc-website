@@ -7,8 +7,9 @@
  * it will look. Each one renders through <Sample>, and while SAMPLE_CONTENT is
  * true the footer carries a notice saying so.
  *
- * To go live: replace the values below with the real ones, drop the <Sample>
- * wrapper at each call site, then set SAMPLE_CONTENT to false.
+ * These are only what the site falls back on. Officers replace them from
+ * /admin (events, gallery, awards, club details), and what they save there is
+ * shown instead: see src/lib/content.jsx.
  *
  * Still outstanding per the spec + copy doc:
  *   - real impact numbers (members / events / awards)
@@ -34,8 +35,11 @@ export const CONTACT = {
   address: 'Vellalur, Palakkad, Kerala',
   phone: '+91 00000 00000',
   email: 'club@example.com',
-  socials: ['Instagram', 'Facebook', 'WhatsApp'],
-  mapsUrl: null, // TODO: [Google Maps link once the address is confirmed]
+  // Links to the club's accounts and its place on Google Maps. Empty until supplied.
+  instagram: '',
+  facebook: '',
+  whatsapp: '',
+  mapsUrl: '',
 }
 
 /**
@@ -44,28 +48,32 @@ export const CONTACT = {
  */
 export const AWARD_PLACEHOLDERS = [
   {
+    sample: true,
     id: 'award-1',
     year: '2024',
-    title: 'District league winners',
-    description: 'Sample entry. The club’s real honours go here once the record arrives.',
+    title: { en: 'District league winners' },
+    description: { en: 'Sample entry. The club’s real honours go here once the record arrives.' },
   },
   {
+    sample: true,
     id: 'award-2',
     year: '2022',
-    title: 'Fair play award',
-    description: 'Sample entry. Replace with what the award was for.',
+    title: { en: 'Fair play award' },
+    description: { en: 'Sample entry. Replace with what the award was for.' },
   },
   {
+    sample: true,
     id: 'award-3',
     year: '2019',
-    title: 'Community service recognition',
-    description: 'Sample entry. Replace with what the award was for.',
+    title: { en: 'Community service recognition' },
+    description: { en: 'Sample entry. Replace with what the award was for.' },
   },
   {
+    sample: true,
     id: 'award-4',
     year: '2015',
-    title: 'Best organised tournament',
-    description: 'Sample entry. Replace with what the award was for.',
+    title: { en: 'Best organised tournament' },
+    description: { en: 'Sample entry. Replace with what the award was for.' },
   },
 ]
 
@@ -81,6 +89,7 @@ const CATEGORIES = ['sports', 'arts', 'sports', 'sports', 'welfare', 'sports', '
 
 export const GALLERY_PLACEHOLDERS = IMAGES.map((image, i) => ({
   id: `photo-${i + 1}`,
+  sample: true,
   image,
   category: CATEGORIES[i],
 }))

@@ -4,7 +4,7 @@ import PhotoPlaceholder from '../components/PhotoPlaceholder.jsx'
 import { useLang } from '../i18n/LanguageContext.jsx'
 import { strings } from '../i18n/strings.js'
 import { gsap, EASE, ScrollTrigger, useGsap } from '../lib/motion.js'
-import { GALLERY_PLACEHOLDERS } from '../data/placeholders.js'
+import { useContent } from '../lib/content.jsx'
 
 /*
   Mosaic spans — mixed tile sizes so the wall reads like real event photos
@@ -24,6 +24,7 @@ const SPANS = [
 
 export default function Gallery() {
   const { t } = useLang()
+  const { gallery } = useContent()
 
   // Photos slide up into their frames in the batches they scroll into view in.
   const mosaic = useGsap(() => {
@@ -45,16 +46,17 @@ export default function Gallery() {
 
       <Section tone="white">
         {/*
-          Collage illustrations until the event photos arrive (see
-          src/data/placeholders.js). Swap in real images and captions, and
-          drop any tiles that aren't needed.
+          The photos officers add at /admin. Until the first one is added
+          these are collage illustrations (see src/data/placeholders.js).
         */}
         <div ref={mosaic} className="grid grid-flow-dense auto-rows-[9rem] grid-cols-2 gap-3 sm:auto-rows-[12rem] sm:grid-cols-4">
-          {GALLERY_PLACEHOLDERS.map((photo, i) => (
+          {gallery.map((photo, i) => (
             <PhotoPlaceholder
               key={photo.id}
               image={photo.image}
-              label={t(strings.name[photo.category])}
+              src={photo.imageUrl}
+              sample={Boolean(photo.sample)}
+              label={t(photo.caption) || t(strings.name[photo.category])}
               className={SPANS[i % SPANS.length]}
             />
           ))}

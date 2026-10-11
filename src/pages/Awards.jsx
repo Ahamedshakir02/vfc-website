@@ -5,10 +5,11 @@ import PageHero from '../components/PageHero.jsx'
 import { useLang } from '../i18n/LanguageContext.jsx'
 import { strings } from '../i18n/strings.js'
 import { gsap, EASE, useGsap } from '../lib/motion.js'
-import { AWARD_PLACEHOLDERS } from '../data/placeholders.js'
+import { useContent } from '../lib/content.jsx'
 
 export default function Awards() {
   const { t } = useLang()
+  const { awards } = useContent()
 
   // The baseline draws across, then each trophy rises onto it.
   const shelf = useGsap(() => {
@@ -30,12 +31,12 @@ export default function Awards() {
           The shelf: unequal-width tiles sitting on one shared baseline, like
           trophies lined up. Flat and hairline-edged — not a card grid.
 
-          The entries are sample awards (see src/data/placeholders.js). Replace
-          the whole list once the client sends the real record.
+          The awards officers add at /admin. Until the first one is added
+          these are sample entries (see src/data/placeholders.js).
         */}
         <div ref={shelf}>
           <ul className="flex flex-wrap items-end gap-3 overflow-hidden pb-3">
-            {AWARD_PLACEHOLDERS.map((award, i) => (
+            {awards.map((award, i) => (
               <li
                 key={award.id}
                 className="shelf-item group rounded-tile border border-brand/15 bg-white px-6 pb-8 transition-colors duration-500 hover:bg-sand"
@@ -46,15 +47,19 @@ export default function Awards() {
                   paddingTop: `${2.5 + (i % 3) * 1.75}rem`,
                 }}
               >
-                <Crest draw className="h-10 w-10 text-gold transition-transform duration-500 ease-out group-hover:-translate-y-1.5" />
+                {award.imageUrl ? (
+                  <img src={award.imageUrl} alt="" loading="lazy" className="mb-1 h-36 w-full rounded-control object-cover" />
+                ) : (
+                  <Crest draw className="h-10 w-10 text-gold transition-transform duration-500 ease-out group-hover:-translate-y-1.5" />
+                )}
                 <p className="mt-5 font-display text-3xl font-bold text-brand/35">
-                  <Sample>{award.year}</Sample>
+                  <Sample when={Boolean(award.sample)}>{award.year}</Sample>
                 </p>
                 <h3 className="mt-1 text-xl font-bold text-brand">
-                  <Sample>{award.title}</Sample>
+                  <Sample when={Boolean(award.sample)}>{t(award.title)}</Sample>
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-ink/70">
-                  <Sample>{award.description}</Sample>
+                  <Sample when={Boolean(award.sample)}>{t(award.description)}</Sample>
                 </p>
               </li>
             ))}

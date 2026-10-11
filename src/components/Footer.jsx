@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useLang } from '../i18n/LanguageContext.jsx'
 import { strings } from '../i18n/strings.js'
-import { CONTACT, SAMPLE_CONTENT } from '../data/placeholders.js'
-import { getOpenEvent } from '../data/events.js'
+import { useContent } from '../lib/content.jsx'
 import { gsap, useGsap } from '../lib/motion.js'
 import Button from './Button.jsx'
 import crestWhite from '../assets/vfc-crest-white.png'
@@ -25,15 +24,15 @@ const links = [
 export default function Footer() {
   const { t } = useLang()
   const year = new Date().getFullYear()
+  const { openEvent, site } = useContent()
 
   const details = [
-    { label: t(strings.contact.address), value: CONTACT.address },
-    { label: t(strings.contact.phone), value: CONTACT.phone },
-    { label: t(strings.contact.email), value: CONTACT.email },
+    { label: t(strings.contact.address), value: site.contact.address },
+    { label: t(strings.contact.phone), value: site.contact.phone },
+    { label: t(strings.contact.email), value: site.contact.email },
   ]
 
   // Same rule as the header bar: while an event is open, the button registers for it.
-  const openEvent = getOpenEvent()
   const action = openEvent
     ? { to: `/events/${openEvent.id}`, label: t(strings.actions.registerNow) }
     : { to: '/contact', label: t(strings.contact.heading) }
@@ -91,7 +90,7 @@ export default function Footer() {
               <div key={row.label}>
                 <dt className="text-white/50">{row.label}</dt>
                 <dd className="mt-1.5 break-words font-medium text-white/90">
-                  <Sample>{row.value}</Sample>
+                  <Sample when={site.contactSample}>{row.value}</Sample>
                 </dd>
               </div>
             ))}
@@ -102,7 +101,7 @@ export default function Footer() {
           <span>{t(strings.footer.rights, { year })}</span>
           <LanguageToggle onDark />
           {/* Shown for as long as the site is running on sample content. */}
-          {SAMPLE_CONTENT && (
+          {site.sampleNotice && (
             <span className="basis-full text-gold">
               Sample content: photos, figures, awards and contact details are placeholders.
             </span>

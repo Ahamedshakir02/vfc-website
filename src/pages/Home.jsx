@@ -12,10 +12,10 @@ import { useLang } from '../i18n/LanguageContext.jsx'
 import { strings } from '../i18n/strings.js'
 import { gsap, EASE, introDelay, useGsap } from '../lib/motion.js'
 import { usePageTitle } from '../lib/usePageTitle.js'
-import { EVENTS, getOpenEvent } from '../data/events.js'
+import { useContent } from '../lib/content.jsx'
+import { eventImage, formatDate, isSampleField } from '../lib/format.js'
 import { EVENT_STATUS } from '../data/schema.js'
 import { ILLUSTRATIONS } from '../data/illustrations.js'
-import { AWARD_PLACEHOLDERS, GALLERY_PLACEHOLDERS, IMPACT_STATS } from '../data/placeholders.js'
 
 const PILLARS = [
   { key: 'sports', image: 'runner' },
@@ -108,7 +108,7 @@ function Hero({ openEvent }) {
 }
 
 /** A stat counts up from zero the first time it scrolls into view. */
-function Stat({ value, suffix = '', label }) {
+function Stat({ value, suffix = '', label, sample }) {
   const ref = useGsap(() => {
     const count = { n: 0 }
     gsap.to(count, {
@@ -126,7 +126,7 @@ function Stat({ value, suffix = '', label }) {
     <div className="flex flex-col-reverse justify-end bg-sand px-4 py-6 sm:px-6 sm:py-8">
       <dt className="mt-3 text-sm text-ink/65">{label}</dt>
       <dd className="font-display text-3xl font-bold text-brand sm:text-5xl">
-        <Sample>
+        <Sample when={sample}>
           <span ref={ref}>{value.toLocaleString('en-IN')}</span>
           {suffix}
         </Sample>
@@ -155,8 +155,9 @@ function ImpactBlurb({ text }) {
 
 /** The open event, large; whatever is coming next, beside it. */
 function WhatsOn({ openEvent }) {
-  const { t } = useLang()
-  const upcoming = EVENTS.filter((event) => event.status === EVENT_STATUS.upcoming).slice(0, 2)
+  const { t, lang } = useLang()
+  const { events } = useContent()
+  const upcoming = events.filter((event) => event.status === EVENT_STATUS.upcoming).slice(0, 2)
 
   return (
     <Section
@@ -176,7 +177,7 @@ function WhatsOn({ openEvent }) {
           >
             <div className="h-60 w-full overflow-hidden rounded-control">
               <img
-                src={ILLUSTRATIONS[openEvent.image]}
+                src={eventImage(openEvent)}
                 alt=""
                 loading="lazy"
                 className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
@@ -197,7 +198,7 @@ function WhatsOn({ openEvent }) {
           >
             <div className="h-40 overflow-hidden">
               <img
-                src={ILLUSTRATIONS[event.image]}
+                src={eventImage(event)}
                 alt=""
                 loading="lazy"
                 className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
@@ -206,10 +207,12 @@ function WhatsOn({ openEvent }) {
             <div className="flex flex-col items-start gap-2.5 p-6">
               <EventStatus status={event.status} />
               <h3 className="text-2xl font-bold leading-tight text-brand">
-                <Sample>{t(event.title)}</Sample>
+                <Sample when={Boolean(event.sample)}>{t(event.title)}</Sample>
               </h3>
               <p className="text-ink/65">
-                <Sample>{event.startsOn ?? t(strings.events.toBeAnnounced)}</Sample>
+                <Sample when={!event.startsOn || isSampleField(event, 'startsOn')}>
+                  {formatDate(event.startsOn, lang) ?? t(strings.events.toBeAnnounced)}
+                </Sample>
               </p>
             </div>
           </Link>
@@ -223,8 +226,7 @@ export default function Home() {
   const { t } = useLang()
   usePageTitle()
 
-  // Stands in for the first `events` document whose status is `open`.
-  const openEvent = getOpenEvent()
+  const { openEvent, awards, gallery, site } = useContent()
 
   // Shelf: the baseline draws across, then each trophy rises onto it.
   const shelf = useGsap(() => {
@@ -271,11 +273,12 @@ export default function Home() {
         <div className="grid gap-12 md:grid-cols-[1.25fr_1fr] md:items-end md:gap-16">
           <ImpactBlurb text={t(strings.home.impactBlurb)} />
           <Reveal as="dl" stagger={0.1} className="grid grid-cols-3 gap-px overflow-hidden rounded-tile border border-brand/15 bg-brand/15">
-            {IMPACT_STATS.map((stat) => (
+            {site.stats.map((stat) => (
               <Stat
                 key={stat.key}
                 value={stat.value}
                 suffix={stat.suffix}
+                sample={site.statsSample}
                 label={t(strings.home.impactLabels[stat.key])}
               />
             ))}
@@ -314,7 +317,7 @@ export default function Home() {
       >
         <div ref={shelf}>
           <ul className="flex flex-wrap items-end gap-3 overflow-hidden pb-3">
-            {AWARD_PLACEHOLDERS.slice(0, 3).map((award, i) => (
+            {awards.slice(0, 3).map((award, i) => (
               <li
                 key={award.id}
                 className="shelf-item group flex-1 rounded-tile border border-brand/15 bg-white px-6 pb-7 transition-colors duration-500 hover:bg-brand/5"
@@ -323,10 +326,10 @@ export default function Home() {
               >
                 <Crest draw className="h-9 w-9 text-gold transition-transform duration-500 ease-out group-hover:-translate-y-1.5" />
                 <p className="mt-5 font-display text-2xl font-bold text-brand/55">
-                  <Sample>{award.year}</Sample>
+                  <Sample when={Boolean(award.sample)}>{award.year}</Sample>
                 </p>
                 <h3 className="mt-1 text-lg font-bold text-brand">
-                  <Sample>{award.title}</Sample>
+                  <Sample when={Boolean(award.sample)}>{t(award.title)}</Sample>
                 </h3>
               </li>
             ))}
@@ -355,11 +358,13 @@ export default function Home() {
         }
       >
         <div ref={mosaic} className="grid auto-rows-[8rem] grid-cols-2 gap-3 sm:auto-rows-[11rem] sm:grid-cols-4">
-          {GALLERY_PLACEHOLDERS.slice(0, 4).map((photo, i) => (
+          {gallery.slice(0, 4).map((photo, i) => (
             <PhotoPlaceholder
               key={photo.id}
               image={photo.image}
-              label={t(strings.name[photo.category])}
+              src={photo.imageUrl}
+              sample={Boolean(photo.sample)}
+              label={t(photo.caption) || t(strings.name[photo.category])}
               className={
                 // Mixed spans so the mosaic reads as real photos, not a uniform grid.
                 ['col-span-2 row-span-2', '', '', 'col-span-2'][i]

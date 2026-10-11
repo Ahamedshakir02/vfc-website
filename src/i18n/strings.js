@@ -162,6 +162,23 @@ export const strings = {
         },
       },
     ],
+    // The last two steps when the fee can be paid on the page itself.
+    stepsOnline: [
+      {
+        title: { en: 'Pay the entry fee', ml: 'പ്രവേശന ഫീസ് അടയ്ക്കുക' },
+        body: {
+          en: "Pay online on this page by UPI, card or net banking. Or send the fee to the club's UPI ID and upload a screenshot.",
+          ml: 'ഈ പേജിൽ തന്നെ UPI, കാർഡ് അല്ലെങ്കിൽ നെറ്റ് ബാങ്കിംഗ് വഴി പണമടയ്ക്കാം. അല്ലെങ്കിൽ ക്ലബ്ബിന്റെ UPI ഐഡിയിലേക്ക് ഫീസ് അയച്ച് സ്ക്രീൻഷോട്ട് അപ്‌ലോഡ് ചെയ്യുക.',
+        },
+      },
+      {
+        title: { en: 'You are registered', ml: 'രജിസ്ട്രേഷൻ പൂർത്തിയാകും' },
+        body: {
+          en: 'An online payment confirms your place straight away. A UPI screenshot is checked by a club volunteer first.',
+          ml: 'ഓൺലൈനായി പണമടച്ചാൽ ഉടൻ തന്നെ നിങ്ങളുടെ സ്ഥാനം ഉറപ്പാകും. UPI സ്ക്രീൻഷോട്ട് ആണെങ്കിൽ ക്ലബ്ബിലെ ഒരു സന്നദ്ധപ്രവർത്തകൻ ആദ്യം പരിശോധിക്കും.',
+        },
+      },
+    ],
     notOpen: {
       en: 'Registration for this event is not open.',
       ml: 'ഈ പരിപാടിയുടെ രജിസ്ട്രേഷൻ ഇപ്പോൾ തുറന്നിട്ടില്ല.',
@@ -185,6 +202,48 @@ export const strings = {
     category: { en: 'Category', ml: 'വിഭാഗം' },
     team: { en: 'Team name', ml: 'ടീമിന്റെ പേര്' },
     payHeading: { en: 'Pay by UPI', ml: 'UPI വഴി പണമടയ്ക്കുക' },
+    // Shown only when the club has switched online payment on.
+    payChoice: { en: 'How would you like to pay?', ml: 'എങ്ങനെ പണമടയ്ക്കണം?' },
+    payOnline: { en: 'Pay online now', ml: 'ഇപ്പോൾ ഓൺലൈനായി അടയ്ക്കുക' },
+    payOnlineHint: { en: 'UPI, card or net banking. Confirmed at once.', ml: 'UPI, കാർഡ്, നെറ്റ് ബാങ്കിംഗ്. ഉടൻ സ്ഥിരീകരിക്കും.' },
+    payUpi: { en: 'Send by UPI and upload a screenshot', ml: 'UPI വഴി അയച്ച് സ്ക്രീൻഷോട്ട് നൽകുക' },
+    payUpiHint: { en: 'A club volunteer checks it by hand.', ml: 'ക്ലബ്ബിലെ ഒരു സന്നദ്ധപ്രവർത്തകൻ പരിശോധിക്കും.' },
+    onlineHeading: { en: 'Pay online', ml: 'ഓൺലൈനായി പണമടയ്ക്കുക' },
+    onlineBody: {
+      en: 'The payment page opens when you press the button below. You are registered as soon as the payment goes through.',
+      ml: 'താഴെയുള്ള ബട്ടൺ അമർത്തുമ്പോൾ പേയ്മെന്റ് പേജ് തുറക്കും. പണമടച്ചാലുടൻ നിങ്ങളുടെ രജിസ്ട്രേഷൻ പൂർത്തിയാകും.',
+    },
+    amount: { en: 'Amount', ml: 'തുക' },
+    payAndRegister: { en: 'Pay {fee} and register', ml: '{fee} അടച്ച് രജിസ്റ്റർ ചെയ്യുക' },
+    paying: { en: 'Waiting for the payment…', ml: 'പേയ്മെന്റിനായി കാത്തിരിക്കുന്നു…' },
+    noteOnline: {
+      en: 'Payments are handled by the payment provider. This site never sees your card or bank details.',
+      ml: 'പേയ്മെന്റ് കൈകാര്യം ചെയ്യുന്നത് പേയ്മെന്റ് സേവനദാതാവാണ്. നിങ്ങളുടെ കാർഡ്, ബാങ്ക് വിവരങ്ങൾ ഈ സൈറ്റ് കാണുന്നില്ല.',
+    },
+    successOnline: {
+      en: 'Thanks — your payment went through and you are registered. Keep this payment ID for your records: {ref}',
+      ml: 'നന്ദി — പണം ലഭിച്ചു, നിങ്ങളുടെ രജിസ്ട്രേഷൻ പൂർത്തിയായി. ഈ പേയ്മെന്റ് ഐഡി സൂക്ഷിച്ചുവെക്കുക: {ref}',
+    },
+    payCancelled: {
+      en: 'The payment was not completed, so you are not registered yet. Nothing was charged. You can try again.',
+      ml: 'പേയ്മെന്റ് പൂർത്തിയായില്ല, അതിനാൽ രജിസ്ട്രേഷനും പൂർത്തിയായിട്ടില്ല. പണം ഈടാക്കിയിട്ടില്ല. വീണ്ടും ശ്രമിക്കാം.',
+    },
+    payFailed: {
+      en: 'Online payment could not be started. Check your connection and try again, or pay by UPI instead.',
+      ml: 'ഓൺലൈൻ പേയ്മെന്റ് ആരംഭിക്കാനായില്ല. ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക, അല്ലെങ്കിൽ UPI വഴി അടയ്ക്കുക.',
+    },
+    payUnconfirmed: {
+      en: 'We could not confirm your payment. If money left your account, do not pay again: contact the club with this reference: {ref}',
+      ml: 'നിങ്ങളുടെ പേയ്മെന്റ് സ്ഥിരീകരിക്കാനായില്ല. അക്കൗണ്ടിൽ നിന്ന് പണം പോയിട്ടുണ്ടെങ്കിൽ വീണ്ടും അടയ്ക്കരുത്: ഈ റഫറൻസുമായി ക്ലബ്ബിനെ ബന്ധപ്പെടുക: {ref}',
+    },
+    // The stand-in for the payment page when the site runs on the local emulators.
+    demoHeading: { en: 'Demo payment', ml: 'ഡെമോ പേയ്മെന്റ്' },
+    demoBody: {
+      en: 'This site is running in demo mode, so this stands in for the payment page. No money moves.',
+      ml: 'ഈ സൈറ്റ് ഡെമോ മോഡിലാണ്; പേയ്മെന്റ് പേജിന് പകരമാണിത്. പണം കൈമാറ്റം നടക്കുന്നില്ല.',
+    },
+    demoPay: { en: 'Pay {fee} (demo)', ml: '{fee} അടയ്ക്കുക (ഡെമോ)' },
+    demoCancel: { en: 'Cancel', ml: 'റദ്ദാക്കുക' },
     send: { en: 'Send', ml: 'അയയ്ക്കേണ്ട തുക' },
     toUpi: { en: 'To UPI ID', ml: 'UPI ഐഡി' },
     copy: { en: 'Copy ID', ml: 'ഐഡി പകർത്തുക' },
@@ -255,6 +314,7 @@ export const strings = {
   contact: {
     heading: { en: 'Get in touch', ml: 'ബന്ധപ്പെടുക' },
     address: { en: 'Address', ml: 'വിലാസം' },
+    openMap: { en: 'Open in Google Maps', ml: 'Google Maps-ൽ തുറക്കുക' },
     phone: { en: 'Phone', ml: 'ഫോൺ' },
     email: { en: 'Email', ml: 'ഇമെയിൽ' },
   },

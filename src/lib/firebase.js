@@ -1,10 +1,11 @@
 /**
  * Firebase app init only.
  *
- * Firestore, Storage and Auth are loaded where they are used and nowhere
- * else: src/lib/services.js holds the first two for the public form,
- * src/lib/admin.js adds Auth for the officers' screens. The collections are
- * listed in src/data/schema.js.
+ * Everything else is loaded where it is used and nowhere else:
+ * src/lib/publicStore.js reads the site's content, src/lib/services.js holds
+ * Firestore and Storage for the registration form, src/lib/payments.js calls
+ * the payment functions, and src/lib/admin.js adds Auth for the officers'
+ * screens. The collections are listed in src/data/schema.js.
  */
 import { initializeApp, getApps } from 'firebase/app'
 
@@ -16,11 +17,11 @@ import { initializeApp, getApps } from 'firebase/app'
  */
 export const emulated = import.meta.env.DEV && import.meta.env.VITE_FIREBASE_EMULATORS === 'true'
 export const EMULATOR_HOST = '127.0.0.1'
-export const EMULATOR_PORTS = { auth: 9099, firestore: 8089, storage: 9199 } // as in firebase.json
+export const EMULATOR_PORTS = { auth: 9099, firestore: 8089, storage: 9199, functions: 5001 } // as in firebase.json
 
 const firebaseConfig = emulated
   ? // A "demo-" project is one the emulators accept without any credentials.
-    { apiKey: 'demo', projectId: 'demo-vfc', storageBucket: 'demo-vfc.appspot.com' }
+    { apiKey: 'demo', projectId: 'demo-vfc', storageBucket: 'demo-vfc.appspot.com', appId: 'demo' }
   : {
       apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
       authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,

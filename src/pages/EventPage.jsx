@@ -8,14 +8,14 @@ import RegistrationForm from '../components/RegistrationForm.jsx'
 import Reveal from '../components/motion/Reveal.jsx'
 import { useLang } from '../i18n/LanguageContext.jsx'
 import { strings } from '../i18n/strings.js'
-import { getEvent } from '../data/events.js'
-import { CONTACT } from '../data/placeholders.js'
+import { useContent } from '../lib/content.jsx'
+import { eventImage, formatDate, formatFee, isSampleField } from '../lib/format.js'
 import { EVENT_STATUS } from '../data/schema.js'
-import { ILLUSTRATIONS } from '../data/illustrations.js'
 
 export default function EventPage() {
-  const { t } = useLang()
+  const { t, lang } = useLang()
   const { id } = useParams()
+  const { getEvent, site } = useContent()
   const event = getEvent(id)
 
   if (!event) {
@@ -29,18 +29,20 @@ export default function EventPage() {
   }
 
   const isOpen = event.status === EVENT_STATUS.open
+  // The first step is the same either way; how the fee is paid changes the rest.
+  const steps = site.payOnline ? [strings.events.steps[0], ...strings.events.stepsOnline] : strings.events.steps
   const facts = [
-    { label: t(strings.events.starts), value: event.startsOn },
-    { label: t(strings.events.venue), value: event.venue },
-    { label: t(strings.events.fee), value: event.fee },
-    { label: t(strings.events.closes), value: event.closesOn },
+    { key: 'startsOn', label: t(strings.events.starts), value: formatDate(event.startsOn, lang) },
+    { key: 'venue', label: t(strings.events.venue), value: event.venue },
+    { key: 'fee', label: t(strings.events.fee), value: formatFee(event.fee) },
+    { key: 'closesOn', label: t(strings.events.closes), value: formatDate(event.closesOn, lang) },
   ]
 
   return (
     <>
       <PageHero
         heading={t(event.title)}
-        image={ILLUSTRATIONS[event.image]}
+        image={eventImage(event)}
         before={
           <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
             <Link to="/events" className="inline-flex min-h-11 items-center font-semibold underline-offset-4 hover:underline text-white">
@@ -55,7 +57,9 @@ export default function EventPage() {
             <div key={fact.label}>
               <dt className="text-sm text-white/75">{fact.label}</dt>
               <dd className="mt-1 font-display text-2xl font-bold">
-                {fact.value ?? <Sample>{t(strings.events.toBeAnnounced)}</Sample>}
+                <Sample when={!fact.value || isSampleField(event, fact.key)}>
+                  {fact.value || t(strings.events.toBeAnnounced)}
+                </Sample>
               </dd>
             </div>
           ))}
@@ -67,14 +71,14 @@ export default function EventPage() {
           <Reveal stagger={0.1}>
             <h2 className="text-3xl font-bold">{t(strings.events.about)}</h2>
             <p className="mt-4 text-lg leading-relaxed text-ink/85">
-              {event.sample ? <Sample>{t(event.description)}</Sample> : t(event.description)}
+              <Sample when={Boolean(event.sample)}>{t(event.description)}</Sample>
             </p>
 
             {isOpen && (
               <>
                 <h2 className="mt-14 text-3xl font-bold">{t(strings.events.how)}</h2>
                 <ol className="mt-6 flex flex-col gap-3">
-                  {strings.events.steps.map((step, i) => (
+                  {steps.map((step, i) => (
                     <li key={i} className="flex gap-5 rounded-tile border border-brand/15 bg-white p-6">
                       <span
                         aria-hidden="true"
@@ -95,14 +99,16 @@ export default function EventPage() {
             <div className="mt-10 rounded-tile bg-brand/10 p-6">
               <h3 className="text-xl font-bold text-brand-deep">{t(strings.events.questions)}</h3>
               <p className="mt-1.5 text-ink/85">
-                <Sample>{CONTACT.phone}</Sample>, <Sample>{CONTACT.email}</Sample>
+                <Sample when={site.contactSample}>
+                  {site.contact.phone}, {site.contact.email}
+                </Sample>
               </p>
             </div>
           </Reveal>
 
           {isOpen ? (
             <Reveal>
-              <RegistrationForm event={event} />
+              <RegistrationForm key={event.id} event={event} />
             </Reveal>
           ) : (
             <Reveal className="rounded-tile border border-brand/15 bg-white p-7 sm:p-9">
