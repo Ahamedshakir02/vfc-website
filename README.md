@@ -8,11 +8,31 @@ and `vfc-club-website-copy.md` for the source copy.
 **Public site.** Home, Events, an event page with its registration form, About,
 Awards, Gallery, Contact. Bilingual EN/ML with a language toggle.
 
-**Admin, at `/admin`.** Officers sign in and check registrations: view each
-payment screenshot, mark it verified, export the list. English only.
+**Registration and payment.** The entry fee is paid online through Cashfree
+(registered at once), or by UPI with a screenshot an officer checks, or either,
+whichever the club switches on.
 
-**Not built.** Admin screens for events, awards and the gallery (events still
-come from `src/data/events.js`), and online payment.
+**Admin, at `/admin`.** Officers sign in to check registrations and to edit
+what the site shows: events (dates, fee, photo, who can register), the gallery,
+awards, and the club's contact details, figures and payment settings. English
+only.
+
+## Try everything, with nothing set up
+
+```
+npm install
+npm run demo
+```
+
+This starts the Firebase emulators and the site together on this machine, with
+demo data: an officer account, the events, both ways of paying, and a few
+sample registrations. Open the address it prints, register for the league, then
+go to `/admin` and press "Fill in the demo account". Online payment shows a
+stand-in payment page, so no money can move. Ctrl+C stops it and throws the
+demo data away.
+
+It needs the Firebase CLI (`npm install -g firebase-tools`) and Java. The demo
+account's details are in `.env.demo`; they exist only inside the emulators.
 
 ## Run
 
@@ -39,17 +59,56 @@ the purple crest, and a white version of the same crest for purple surfaces.
 
 `.env.example` → copy to `.env.local` and fill from the Firebase console.
 `src/lib/firebase.js` initialises the app only and no-ops without config, so the
-public pages run fine with no `.env.local`. `src/data/schema.js` documents the
-Firestore collections.
+public pages run fine with no `.env.local`, on their built-in content.
+`src/data/schema.js` documents the Firestore collections.
 
-Hosting config is in `firebase.json` (SPA rewrite, serves `dist`).
+Hosting config is in `firebase.json` (SPA rewrite, serves `dist`). Storage and
+Cloud Functions need the project to be on the Blaze (pay as you go) plan.
+
+### Content
+
+Events, gallery photos, awards and the club's details live in Firestore and are
+edited at `/admin`. Each list falls back on what is built in
+(`src/data/events.js`, `src/data/placeholders.js`) until an officer saves the
+first entry to it; from then on only what officers saved is shown. For events,
+the admin screen offers to copy the built-in ones in as a starting point.
+`src/lib/content.jsx` does the choosing. Uploaded photos are made smaller in
+the browser first and go to Storage under `site/`.
 
 ### Registration
 
-The form on an open event's page stays visible but switched off until three
-things are set: the Firebase values, `VITE_CLUB_UPI_ID`, and the event's `fee`
-in `src/data/events.js`. Nothing is charged through the site: the visitor pays
-in their own UPI app, then gives the reference number and a screenshot.
+The form on an open event's page stays visible but switched off until the
+Firebase values are set, the event has a fee, and there is a way to pay it.
+Both are set at `/admin`: the fee on the event, the ways to pay under Club
+details.
+
+- **UPI and a screenshot.** Set the club's UPI ID. The visitor pays in their
+  own UPI app, then gives the reference number and a screenshot, and an officer
+  marks it verified under Registrations. Nothing is charged through the site.
+- **Online, through Cashfree.** Tick "Take payments online". The visitor pays
+  on the page and is registered at once. This needs the Cloud Functions
+  deployed with the club's Cashfree keys (below).
+
+### Online payment (Cashfree)
+
+The code is in `functions/index.js`: the amount charged is always the event's
+fee as stored, and a registration is only written after Cashfree itself reports
+the order paid.
+
+1. In the Cashfree merchant dashboard, Developers > API Keys, generate a key
+   pair. Use the Test pair first.
+2. Copy `functions/.env.example` to `functions/.env` and fill it in.
+   `CASHFREE_ENV=sandbox` for test keys, `production` for live ones.
+3. `firebase deploy --only functions`.
+4. In the Cashfree dashboard, Developers > Webhooks, add the address of the
+   `cashfreeWebhook` function (the deploy prints it) for the "payment success"
+   event. It registers a payer whose browser closed before the page could.
+5. At `/admin`, Club details, tick "Take payments online".
+
+With keys in `functions/.env`, `npm run demo` opens the real Cashfree test
+payment page instead of the stand-in. That path, and the webhook, have not been
+run against Cashfree yet: no keys were available when this was built. Do a
+sandbox payment end to end before going live.
 
 ### Admin
 
@@ -65,29 +124,23 @@ In the Firebase console, once:
    that.
 
 What an officer can and cannot do is enforced by `firestore.rules` and
-`storage.rules`, not by the page: officers read registrations and screenshots
-and change `paymentStatus`, and nothing else.
+`storage.rules`, not by the page. Officers read registrations and screenshots,
+change a registration's `paymentStatus`, and edit site content and pictures.
+Nobody can delete a registration, and no browser can mark one verified as it
+is created or touch a payment order.
 
-### Trying it locally
+### Running the pieces by hand
 
-No Firebase project is needed. With the Firebase CLI and Java installed:
-
-```
-npm run emulators                     # Auth, Firestore and Storage on this machine
-```
-
-and in `.env.local`:
+`npm run demo` is these three, in order:
 
 ```
-VITE_FIREBASE_EMULATORS=true
-VITE_CLUB_UPI_ID=test@upi
+npm run emulators                     # Auth, Firestore, Storage, Functions
+node scripts/seed-demo.mjs            # demo data, once they are up
+npx vite --mode demo                  # the site, pointed at them
 ```
 
-then `npm run dev`. Give the league a `fee` in `src/data/events.js` to switch
-the form on. To sign in at `/admin`, add a user in the emulator UI
-(http://127.0.0.1:4000, Authentication) and an empty `admins/<UID>` document
-(Firestore). Emulator data is discarded when the emulators stop.
-`VITE_FIREBASE_EMULATORS` is ignored by `npm run build`.
+Emulator data is discarded when the emulators stop; their own screens are at
+http://127.0.0.1:4000. `VITE_FIREBASE_EMULATORS` is ignored by `npm run build`.
 
 ## Placeholders
 
@@ -102,7 +155,9 @@ while `SAMPLE_CONTENT` is `true` in `src/data/placeholders.js`. Find them with:
 grep -rn "<Sample" src/
 ```
 
-Almost all of it lives in one place: `src/data/placeholders.js`.
+Almost all of it lives in one place: `src/data/placeholders.js`. An entry an
+officer saves at `/admin` is real and renders unmarked; contact details and
+figures stay marked until the officer ticks that they are real.
 
 Still owed by the client: impact numbers, founding story/year/area, award records
 and dates, event photos, address/phone/email, social links, society registration
@@ -111,4 +166,6 @@ number.
 ## Before launch
 
 - Native-speaker review of the Malayalam in `src/i18n/strings.js` (AI-drafted).
-- Replace every `<Sample>` value with real content, then set `SAMPLE_CONTENT` to `false`.
+- Enter the real content at `/admin`, then untick the sample content notice
+  under Club details.
+- A Cashfree sandbox payment, end to end, on the deployed functions.
