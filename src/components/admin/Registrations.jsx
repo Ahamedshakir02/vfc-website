@@ -164,9 +164,12 @@ export default function Registrations() {
 
   // One payment sent in for two registrations is the thing most worth catching.
   const timesUsed = {}
+  // The same person entered twice, e.g. a payer who went through the payment page a second time.
+  const timesEntered = {}
   for (const row of all) {
     const key = row.paymentRef.toLowerCase()
     timesUsed[key] = (timesUsed[key] ?? 0) + 1
+    timesEntered[row.phone] = (timesEntered[row.phone] ?? 0) + 1
   }
 
   // The row flips at once; if the server refuses, it flips back and this says why.
@@ -285,6 +288,11 @@ export default function Registrations() {
                     <a href={`tel:+91${row.phone}`} className="whitespace-nowrap text-brand underline-offset-4 hover:underline">
                       {row.phone}
                     </a>
+                    {timesEntered[row.phone] > 1 && (
+                      <div className="text-[0.8125rem] font-semibold text-[#a3261c]">
+                        On {timesEntered[row.phone]} registrations
+                      </div>
+                    )}
                   </td>
                   <td className="px-5 py-4">{categoryName(event, row.category)}</td>
                   <td className="px-5 py-4">
