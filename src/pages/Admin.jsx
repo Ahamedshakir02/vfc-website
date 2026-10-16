@@ -21,6 +21,15 @@ const SCREENS = [
   { to: '/admin/club', name: 'Club details' },
 ]
 
+// Why the officers list could not be read, by Firestore error code.
+const ACCESS_PROBLEMS = {
+  unavailable: 'Check your connection, then reload the page.',
+  'permission-denied':
+    "Firestore turned the request down. The club's security rules are probably not published yet: run firebase deploy --only firestore:rules,storage, then reload.",
+  'not-found': 'This Firebase project has no Firestore database yet. Create one in the Firebase console, then reload.',
+  'failed-precondition': 'This Firebase project has no Firestore database yet. Create one in the Firebase console, then reload.',
+}
+
 /** Everything short of the working screen: one white panel on the club's purple. */
 function Gate({ children }) {
   return (
@@ -67,8 +76,9 @@ export default function Admin() {
       <Gate>
         <h1 className="text-4xl font-extrabold text-brand">Not set up yet</h1>
         <p className="mt-3 text-ink/80">
-          This site is not connected to Firebase, so there is nothing to sign in to. Add the Firebase values to
-          .env.local and rebuild.
+          This site is not connected to Firebase, so there is nothing to sign in to. Add the VITE_FIREBASE_ values
+          where the site is built (.env.local on a computer, or the repository secrets for the deploy workflow), then
+          build and deploy it again.
         </p>
       </Gate>
     )
@@ -98,7 +108,10 @@ export default function Admin() {
         {session.role === ROLE.unknown ? (
           <>
             <h1 className="text-4xl font-extrabold text-brand">Could not check your access</h1>
-            <p className="mt-3 text-ink/80">Check your connection, then reload the page.</p>
+            <p className="mt-3 text-ink/80">{ACCESS_PROBLEMS[session.problem] ?? ACCESS_PROBLEMS.unavailable}</p>
+            {session.problem && session.problem !== 'unavailable' && (
+              <p className="mt-3 font-mono text-sm text-ink/65">{session.problem}</p>
+            )}
           </>
         ) : (
           <>
