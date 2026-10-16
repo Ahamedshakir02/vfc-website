@@ -1,5 +1,6 @@
 import Section from '../components/Section.jsx'
 import Sample from '../components/Sample.jsx'
+import ContactValue from '../components/ContactValue.jsx'
 import PageHero from '../components/PageHero.jsx'
 import PlaceholderArt from '../components/PlaceholderArt.jsx'
 import Reveal from '../components/motion/Reveal.jsx'
@@ -23,8 +24,8 @@ export default function Contact() {
 
   const rows = [
     { label: t(strings.contact.address), value: contact.address },
-    { label: t(strings.contact.phone), value: contact.phone },
-    { label: t(strings.contact.email), value: contact.email },
+    { label: t(strings.contact.phone), value: contact.phone, kind: 'phone' },
+    { label: t(strings.contact.email), value: contact.email, kind: 'email' },
   ]
 
   return (
@@ -38,7 +39,9 @@ export default function Contact() {
               <div key={row.label} className="border-b border-brand/15 py-6 first:pt-0">
                 <dt className="text-sm font-semibold text-ink/55">{row.label}</dt>
                 <dd className="mt-2 font-display text-2xl font-semibold text-brand sm:text-3xl">
-                  <Sample when={site.contactSample}>{row.value}</Sample>
+                  <Sample when={site.contactSample}>
+                    <ContactValue row={row} live={!site.contactSample} className="underline-offset-4 hover:underline" />
+                  </Sample>
                 </dd>
               </div>
             ))}
