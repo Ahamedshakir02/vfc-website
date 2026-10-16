@@ -161,7 +161,8 @@ figures stay marked until the officer ticks that they are real.
 
 Still owed by the client: impact numbers, founding story/year/area, award records
 and dates, event photos, address/phone/email, social links, society registration
-number.
+number. All but the founding story are entered at `/admin` (the registration
+number under Club details shows on the About page once filled in).
 
 ## Before launch
 
@@ -169,3 +170,7 @@ number.
 - Enter the real content at `/admin`, then untick the sample content notice
   under Club details.
 - A Cashfree sandbox payment, end to end, on the deployed functions.
+- Add a gallery photo and open a payment screenshot at `/admin` on the deployed
+  site, to confirm the Storage rules recognise officers. (In the cloud sandbox
+  these were built in, the emulators' officer lookup was blocked by its network
+  proxy, so this was not seen working there.)
