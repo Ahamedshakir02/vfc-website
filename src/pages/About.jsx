@@ -6,9 +6,11 @@ import Reveal from '../components/motion/Reveal.jsx'
 import { useLang } from '../i18n/LanguageContext.jsx'
 import { strings } from '../i18n/strings.js'
 import { gsap, useGsap } from '../lib/motion.js'
+import { useContent } from '../lib/content.jsx'
 
 export default function About() {
   const { t, lang } = useLang()
+  const { site } = useContent()
   const parts = strings.about.bodyParts
 
   // The two photos drift at different speeds, so the column has some depth.
@@ -60,11 +62,12 @@ export default function About() {
               <p className="mt-3 leading-relaxed text-ink/75">{t(strings.home.impactBlurb)}</p>
             </div>
 
-            {/*
-              TODO: club registration details — registered society/trust number
-              and certificate, Palakkad district. Marked TBD in the spec; add a
-              line here once the client provides it.
-            */}
+            {/* Set by officers under Club details; left out until they do. */}
+            {site.registration && (
+              <p className="mt-8 text-sm text-ink/65">
+                {t(strings.about.registered)} {site.registration}
+              </p>
+            )}
           </Reveal>
 
           <div ref={photos} className="grid grid-cols-[1fr_0.8fr] items-start gap-4 md:pt-6">

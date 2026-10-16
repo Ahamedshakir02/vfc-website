@@ -7,6 +7,7 @@ import Button from './Button.jsx'
 import crestWhite from '../assets/vfc-crest-white.png'
 import LanguageToggle from './LanguageToggle.jsx'
 import Sample from './Sample.jsx'
+import ContactValue from './ContactValue.jsx'
 
 const links = [
   { to: '/', key: 'home' },
@@ -28,8 +29,8 @@ export default function Footer() {
 
   const details = [
     { label: t(strings.contact.address), value: site.contact.address },
-    { label: t(strings.contact.phone), value: site.contact.phone },
-    { label: t(strings.contact.email), value: site.contact.email },
+    { label: t(strings.contact.phone), value: site.contact.phone, kind: 'phone' },
+    { label: t(strings.contact.email), value: site.contact.email, kind: 'email' },
   ]
 
   // Same rule as the header bar: while an event is open, the button registers for it.
@@ -90,7 +91,9 @@ export default function Footer() {
               <div key={row.label}>
                 <dt className="text-white/50">{row.label}</dt>
                 <dd className="mt-1.5 break-words font-medium text-white/90">
-                  <Sample when={site.contactSample}>{row.value}</Sample>
+                  <Sample when={site.contactSample}>
+                    <ContactValue row={row} live={!site.contactSample} className="hover:text-gold" />
+                  </Sample>
                 </dd>
               </div>
             ))}
