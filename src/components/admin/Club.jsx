@@ -111,6 +111,7 @@ export default function Club() {
         upiId,
         payOnline: site.payOnline,
         sampleNotice: site.sampleNotice,
+        registration: (site.registration ?? '').trim(),
       })
       setState('saved')
     } catch {
@@ -137,6 +138,14 @@ export default function Club() {
           <Check checked={!site.contactSample} onChange={(real) => change({ contactSample: !real })}>
             These are the club's real contact details.
           </Check>
+        </Part>
+
+        <Part title="Registration" about="Shown on the About page. Leave empty to leave it out.">
+          <Field label="Society registration number" hint="As on the certificate, for example PKD/123/2010.">
+            {(id) => (
+              <input id={id} type="text" autoComplete="off" value={site.registration ?? ''} onChange={(e) => change({ registration: e.target.value })} className={`${inputClass} max-w-sm`} />
+            )}
+          </Field>
         </Part>
 
         <Part title="Figures" about="The three numbers on the home page.">

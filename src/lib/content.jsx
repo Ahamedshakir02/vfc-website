@@ -25,6 +25,8 @@ export const BUILT_IN_SITE = {
   upiId: (import.meta.env.VITE_CLUB_UPI_ID ?? '').trim(),
   payOnline: false,
   sampleNotice: SAMPLE_CONTENT,
+  // The society's registration number, shown on the About page once an officer adds it.
+  registration: '',
 }
 
 const BUILT_IN = { events: EVENTS, awards: AWARD_PLACEHOLDERS, gallery: GALLERY_PLACEHOLDERS, site: BUILT_IN_SITE }
