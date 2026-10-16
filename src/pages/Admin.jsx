@@ -77,8 +77,8 @@ export default function Admin() {
         <h1 className="text-4xl font-extrabold text-brand">Not set up yet</h1>
         <p className="mt-3 text-ink/80">
           This site is not connected to Firebase, so there is nothing to sign in to. Add the VITE_FIREBASE_ values
-          where the site is built (on Vercel: Settings, Environment Variables; on a computer: .env.local), then build
-          it again.
+          where the site is built (.env.local on a computer, or the repository secrets for the deploy workflow), then
+          build and deploy it again.
         </p>
       </Gate>
     )

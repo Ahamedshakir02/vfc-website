@@ -62,15 +62,27 @@ the purple crest, and a white version of the same crest for purple surfaces.
 public pages run fine with no `.env.local`, on their built-in content.
 `src/data/schema.js` documents the Firestore collections.
 
-The live site is built and served by Vercel from `master`. Vercel only knows
-the Firebase values if they are added in the Vercel project, under Settings >
-Environment Variables (the same `VITE_FIREBASE_*` names as `.env.example`, for
-Production and Preview), followed by a redeploy; without them `/admin` says
-"Not set up yet". `vercel.json` sends every address to `index.html`, so a link
-straight to `/admin` or an event page opens instead of a 404.
+### Hosting
 
-Firebase Hosting config is also in `firebase.json` (SPA rewrite, serves `dist`). Storage and
-Cloud Functions need the project to be on the Blaze (pay as you go) plan.
+The live site is on Firebase Hosting (`firebase.json`: serves `dist`, sends
+every address to `index.html` so a link straight to `/admin` or an event page
+opens, and caches the hashed files in `assets/` for a year).
+
+The Firebase values are built into the site, so they must be present wherever
+it is built: in `.env.local` for a deploy from this computer, or as repository
+secrets for the automatic one. Without them `/admin` says "Not set up yet".
+
+- **From this computer:** `firebase login`, `firebase use --add` (pick the
+  club's project, once), then `npm run build && firebase deploy --only hosting`.
+- **On every merge to master:** `.github/workflows/deploy.yml` builds and
+  deploys. It needs repository secrets (GitHub: Settings > Secrets and
+  variables > Actions): the six `VITE_FIREBASE_*` values from `.env.example`,
+  and `FIREBASE_SERVICE_ACCOUNT`, the whole JSON file from Firebase console >
+  Project settings > Service accounts > Generate new private key. Until the service
+  account is there, the workflow builds and does not deploy.
+
+Storage and Cloud Functions need the project to be on the Blaze (pay as you
+go) plan; Hosting, Auth and Firestore do not.
 
 ### Content
 
