@@ -89,4 +89,5 @@ export const siteFields = [
   'upiId', // where UPI payments are sent
   'payOnline', // offer the payment gateway on the registration form
   'sampleNotice', // show the "sample content" line in the footer
+  'registration', // the society's registration number, shown on the About page; empty hides it
 ]

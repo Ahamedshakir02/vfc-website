@@ -91,6 +91,7 @@ export const strings = {
 
   about: {
     heading: { en: 'About VFC', ml: 'വി.എഫ്.സിയെക്കുറിച്ച്' },
+    registered: { en: 'Registered society, Reg. No.', ml: 'രജിസ്റ്റർ ചെയ്ത സൊസൈറ്റി, രജി. നമ്പർ' },
     bodyParts: {
       leadA: {
         en: 'VFC Arts, Sports & Welfare Club was founded to give the people of ',
