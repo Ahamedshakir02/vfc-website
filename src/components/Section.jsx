@@ -16,10 +16,11 @@ export default function Section({ id, heading, action, tone = 'light', className
       defaults: { ease: EASE },
       scrollTrigger: { trigger: head.current, start: 'top 85%', once: true },
     })
-    tl.from('.word', { yPercent: 115, duration: 1, stagger: 0.06 })
-      .from('.section-rule', { scaleX: 0, duration: 0.9 }, 0.25)
-      .from('.section-action', { opacity: 0, duration: 0.8 }, 0.4)
-  }, [heading])
+    if (heading) {
+      tl.from('.word', { yPercent: 115, duration: 1, stagger: 0.06 }).from('.section-rule', { scaleX: 0, duration: 0.9 }, 0.25)
+    }
+    if (action) tl.from('.section-action', { opacity: 0, duration: 0.8 }, 0.4)
+  }, [heading, Boolean(action)])
 
   return (
     <section id={id} className={`${tones[tone]} ${className}`}>
