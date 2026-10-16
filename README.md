@@ -62,7 +62,14 @@ the purple crest, and a white version of the same crest for purple surfaces.
 public pages run fine with no `.env.local`, on their built-in content.
 `src/data/schema.js` documents the Firestore collections.
 
-Hosting config is in `firebase.json` (SPA rewrite, serves `dist`). Storage and
+The live site is built and served by Vercel from `master`. Vercel only knows
+the Firebase values if they are added in the Vercel project, under Settings >
+Environment Variables (the same `VITE_FIREBASE_*` names as `.env.example`, for
+Production and Preview), followed by a redeploy; without them `/admin` says
+"Not set up yet". `vercel.json` sends every address to `index.html`, so a link
+straight to `/admin` or an event page opens instead of a 404.
+
+Firebase Hosting config is also in `firebase.json` (SPA rewrite, serves `dist`). Storage and
 Cloud Functions need the project to be on the Blaze (pay as you go) plan.
 
 ### Content
@@ -119,7 +126,8 @@ In the Firebase console, once:
 2. Firestore: for each of those users, add an empty document at
    `admins/<their user UID>`. That document is what grants access; a signed-in
    account without one is told so and shown its UID.
-3. Deploy the rules: `firebase deploy --only firestore:rules,storage`. The
+3. Deploy the rules: `firebase use --add` (pick the club's project, once),
+   then `firebase deploy --only firestore:rules,storage`. The
    Storage rules look officers up in Firestore, so the CLI asks once to allow
    that.
 
