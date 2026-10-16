@@ -52,14 +52,16 @@ export function watchSession(onChange) {
     }
 
     let role
+    let problem = null // why the list could not be read: a Firestore error code
     try {
       const entry = await getDoc(doc(db, COLLECTIONS.admins, user.uid))
       role = entry.exists() ? ROLE.officer : ROLE.visitor
-    } catch {
+    } catch (error) {
       role = ROLE.unknown
+      problem = error?.code ?? 'unknown'
     }
     // A slow answer for an account that has since signed out is dropped.
-    if (turn === latest) onChange({ user, role })
+    if (turn === latest) onChange({ user, role, problem })
   })
 }
 
