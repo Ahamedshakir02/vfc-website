@@ -64,7 +64,9 @@ public pages run fine with no `.env.local`, on their built-in content.
 
 ### Hosting
 
-The live site is on Firebase Hosting (`firebase.json`: serves `dist`, sends
+The live site is at https://vfc-arts-sports-club.web.app, the Firebase project
+`vfc-arts-sports-club` (`.firebaserc` makes it the default, so `firebase use`
+is not needed). It is on Firebase Hosting (`firebase.json`: serves `dist`, sends
 every address to `index.html` so a link straight to `/admin` or an event page
 opens, and caches the hashed files in `assets/` for a year).
 
@@ -72,8 +74,8 @@ The Firebase values are built into the site, so they must be present wherever
 it is built: in `.env.local` for a deploy from this computer, or as repository
 secrets for the automatic one. Without them `/admin` says "Not set up yet".
 
-- **From this computer:** `firebase login`, `firebase use --add` (pick the
-  club's project, once), then `npm run build && firebase deploy --only hosting`.
+- **From this computer:** `firebase login`, then
+  `npm run build && firebase deploy --only hosting`.
 - **On every merge to master:** `.github/workflows/deploy.yml` builds and
   deploys. It needs repository secrets (GitHub: Settings > Secrets and
   variables > Actions): the six `VITE_FIREBASE_*` values from `.env.example`,
